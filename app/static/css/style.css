@@ -1,0 +1,399 @@
+/* STREAMING_CHUNK: Setting up Font & Root Design Variables */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+--paper: #f7f5ec;
+--ink: #0c0806;
+--acid: #73d41d;
+--card: #fdfcf6;
+--muted-foreground: #534c44;
+--border-width: 2px;
+--font-sans: 'JetBrains Mono', monospace;
+--font-serif: 'Fraunces', serif;
+}
+
+{
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+body {
+background-color: var(--paper);
+color: var(--ink);
+font-family: var(--font-sans);
+padding: 40px 20px;
+display: flex;
+justify-content: center;
+min-height: 100vh;
+-webkit-font-smoothing: antialiased;
+}
+
+.lab-container {
+width: 100%;
+max-width: 1100px;
+}
+
+/* STREAMING_CHUNK: Designing the Top Editorial Header */
+.lab-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: var(--border-width) solid var(--ink);
+padding-bottom: 20px;
+margin-bottom: 60px;
+}
+
+.logo-brand {
+font-family: var(--font-serif);
+font-size: 2.2rem;
+font-weight: 700;
+letter-spacing: -0.02em;
+}
+
+.header-meta {
+font-size: 0.75rem;
+font-weight: 700;
+color: var(--muted-foreground);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+}
+
+.badge-brutal {
+background-color: var(--acid);
+color: var(--ink);
+font-weight: 700;
+font-size: 0.75rem;
+padding: 8px 16px;
+border: var(--border-width) solid var(--ink);
+letter-spacing: 0.1em;
+}
+
+/* STREAMING_CHUNK: Crafting the Hero Grid Sections */
+.hero-section {
+display: grid;
+grid-template-columns: 1.4fr 1px 1fr;
+gap: 40px;
+margin-bottom: 80px;
+}
+
+.hero-divider {
+background-color: var(--ink);
+width: 1px;
+height: 100%;
+}
+
+.hero-left {
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+
+.hero-tagline {
+font-size: 0.75rem;
+letter-spacing: 0.2em;
+color: var(--muted-foreground);
+margin-bottom: 24px;
+text-transform: uppercase;
+font-weight: 700;
+}
+
+.hero-title {
+font-family: var(--font-serif);
+font-size: 5rem;
+font-weight: 400;
+line-height: 0.95;
+letter-spacing: -0.04em;
+}
+
+.hero-title span.highlight-box {
+background-color: var(--acid);
+color: var(--ink);
+padding: 2px 12px;
+display: inline-block;
+}
+
+.hero-right {
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding-left: 10px;
+}
+
+.editorial-para {
+font-size: 1.1rem;
+line-height: 1.6;
+color: var(--ink);
+margin-bottom: 24px;
+}
+
+.editorial-signature {
+font-size: 0.75rem;
+font-weight: 700;
+letter-spacing: 0.1em;
+color: var(--muted-foreground);
+text-transform: uppercase;
+}
+
+/* STREAMING_CHUNK: Building the Brutalist Textarea Form */
+.section-separator {
+border-top: var(--border-width) solid var(--ink);
+margin-bottom: 40px;
+}
+
+.section-label {
+font-size: 0.8rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+margin-bottom: 20px;
+font-weight: 700;
+}
+
+.input-wrapper {
+border: var(--border-width) solid var(--ink);
+background-color: var(--paper);
+padding: 30px;
+margin-bottom: 12px;
+}
+
+textarea.editorial-textarea {
+width: 100%;
+height: 140px;
+background: transparent;
+border: none;
+outline: none;
+font-family: var(--font-sans);
+font-size: 1.3rem;
+color: var(--ink);
+resize: none;
+line-height: 1.4;
+}
+
+.textarea-footer {
+display: flex;
+justify-content: space-between;
+font-size: 0.75rem;
+color: var(--muted-foreground);
+font-weight: 700;
+letter-spacing: 0.05em;
+margin-bottom: 30px;
+}
+
+/* STREAMING_CHUNK: Dynamic Action controls and template tags */
+.action-panel {
+display: flex;
+align-items: flex-start;
+gap: 30px;
+margin-bottom: 80px;
+}
+
+.ignite-btn {
+background-color: var(--ink);
+color: var(--paper);
+border: var(--border-width) solid var(--ink);
+padding: 20px 30px;
+font-family: var(--font-sans);
+font-size: 0.9rem;
+font-weight: 700;
+text-transform: uppercase;
+cursor: pointer;
+letter-spacing: 0.1em;
+transition: all 0.1s ease;
+display: flex;
+align-items: center;
+gap: 12px;
+flex-shrink: 0;
+}
+
+.ignite-btn:hover {
+background-color: var(--acid);
+color: var(--ink);
+}
+
+.template-box-label {
+font-size: 0.75rem;
+font-weight: 700;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--muted-foreground);
+margin-top: 10px;
+flex-shrink: 0;
+}
+
+.templates-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 10px;
+flex-grow: 1;
+}
+
+.template-tag {
+background: transparent;
+border: var(--border-width) solid var(--ink);
+padding: 10px 15px;
+font-family: var(--font-sans);
+font-size: 0.75rem;
+text-align: left;
+cursor: pointer;
+transition: all 0.15s ease;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+.template-tag:hover {
+background-color: var(--ink);
+color: var(--paper);
+}
+
+/* STREAMING_CHUNK: Composing Loader & Transition Motions */
+.composing-overlay {
+display: none;
+text-align: center;
+padding: 80px 0;
+}
+
+.composing-text {
+font-family: var(--font-serif);
+font-size: 2.2rem;
+font-style: italic;
+color: var(--ink);
+animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* STREAMING_CHUNK: Final Result Board */
+.output-container {
+border-top: var(--border-width) solid var(--ink);
+padding-top: 60px;
+margin-bottom: 80px;
+}
+
+.output-hero {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 50px;
+gap: 40px;
+}
+
+.output-headline {
+font-family: var(--font-serif);
+font-size: 3rem;
+font-weight: 700;
+line-height: 1.05;
+letter-spacing: -0.02em;
+flex-grow: 1;
+}
+
+.score-panel {
+border: var(--border-width) solid var(--ink);
+padding: 15px 25px;
+text-align: center;
+flex-shrink: 0;
+}
+
+.score-main {
+font-family: var(--font-serif);
+font-size: 3.5rem;
+font-weight: 700;
+line-height: 1;
+}
+
+.score-total {
+font-size: 1.2rem;
+font-weight: 400;
+}
+
+.score-tag {
+font-size: 0.7rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--muted-foreground);
+margin-top: 5px;
+}
+
+/* Row-by-Row Layout Table */
+.data-row {
+display: grid;
+grid-template-columns: 240px 1fr;
+border-top: var(--border-width) solid var(--ink);
+padding: 30px 0;
+}
+
+.data-row:last-child {
+border-bottom: var(--border-width) solid var(--ink);
+}
+
+.data-label {
+font-size: 0.8rem;
+font-weight: 700;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--muted-foreground);
+}
+
+.data-content {
+font-size: 1rem;
+line-height: 1.6;
+}
+
+/* Custom bullet cards styling */
+.bullet-item {
+display: flex;
+gap: 20px;
+margin-bottom: 16px;
+}
+
+.bullet-item:last-child {
+margin-bottom: 0;
+}
+
+.bullet-idx {
+color: var(--acid);
+font-weight: 700;
+}
+
+.acid-card-highlight {
+background-color: var(--acid);
+padding: 20px;
+border: var(--border-width) solid var(--ink);
+}
+
+/* Footer layout */
+.footer-bar {
+border-top: var(--border-width) solid var(--ink);
+padding: 25px 0;
+display: flex;
+justify-content: space-between;
+font-size: 0.75rem;
+color: var(--muted-foreground);
+font-weight: 700;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+}
+
+/* Custom CSS Animations */
+@keyframes pulse {
+0%, 100% { opacity: 0.4; }
+50% { opacity: 1; }
+}
+
+@media (max-width: 850px) {
+.hero-section {
+grid-template-columns: 1fr;
+}
+.hero-divider {
+display: none;
+}
+.action-panel {
+flex-direction: column;
+}
+.templates-grid {
+grid-template-columns: 1fr;
+width: 100%;
+}
+.data-row {
+grid-template-columns: 1fr;
+gap: 15px;
+}
+}

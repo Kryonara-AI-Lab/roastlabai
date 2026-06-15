@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoastLab — Brutally Honest AI Startup Audits</title>
+    <!-- Tailwind CSS for utility grids -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Premium Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;700&display=swap">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --paper: #f7f5ec;
+            --ink: #0c0806;
+            --acid: #73d41d;
+            --card: #fdfcf6;
+            --muted-foreground: #534c44;
+            --font-sans: 'JetBrains Mono', monospace;
+            --font-serif: 'Fraunces', serif;
+        }
+
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .serif-title {
+            font-family: var(--font-serif);
+        }
+
+        /* Ticker tape visual layout */
+        .ticker-wrapper {
+            background-color: var(--ink);
+            color: var(--paper);
+            border-bottom: 2px solid var(--ink);
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 8px 0;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            animation: scroll-ticker 30s linear infinite;
+        }
+
+        @keyframes scroll-ticker {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Brutalist borders */
+        .brutal-border {
+            border: 2px solid var(--ink);
+        }
+
+        .brutal-shadow {
+            box-shadow: 4px 4px 0px 0px var(--ink);
+        }
+
+        .brutal-shadow-lg {
+            box-shadow: 8px 8px 0px 0px var(--ink);
+        }
+
+        .brutal-btn {
+            background-color: var(--ink);
+            color: var(--paper);
+            border: 2px solid var(--ink);
+            transition: all 0.15s cubic-bezier(0.16, 1, 0.32, 1);
+        }
+
+        .brutal-btn:hover {
+            background-color: var(--acid);
+            color: var(--ink);
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px 0px var(--ink);
+        }
+
+        .brutal-btn:active {
+            transform: translate(0px, 0px);
+            box-shadow: 0px 0px 0px 0px var(--ink);
+        }
+
+        /* ASCII globe animation */
+        .globe-ascii {
+            font-size: 8px;
+            line-height: 8px;
+            letter-spacing: 1px;
+            font-weight: bold;
+            color: var(--ink);
+            white-space: pre;
+            opacity: 0.85;
+            user-select: none;
+        }
+
+        /* Custom Scrollbar for Drawer */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: var(--ink);
+        }
+
+        /* Grid scanline overlays */
+        .scanlines {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.04) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative">
+    <div class="scanlines absolute inset-0 z-50 pointer-events-none opacity-40"></div>
+
+    <!-- Ticker Tape Top Banner -->
+    <div class="ticker-wrapper">
+        <div class="ticker-content">
+            ✦ GLOBAL ROAST REACTOR ACTIVE ✦ MONITORED BREAKPOINTS: SILICON VALLEY [DELUSIONAL] ✦ TOKYO [CONSOLIDATING] ✦ LONDON [DIVERSIFYING] ✦ SHANGHAI [OVERHEATING] ✦ CURRENT TRANSACTION ID: #RL-2026-928A ✦ MEMORY OVERHEAD: 24.8% ✦ COMPILING AUTOMATED CRITIQUES ✦ GLOBAL ROAST REACTOR ACTIVE ✦
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-6xl mx-auto px-4 md:px-8 py-8 w-full flex-grow">
+        
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-[#0c0806] pb-6 mb-12">
+            <div>
+                <div class="serif-title text-5xl font-bold tracking-tight">RoastLab <span class="text-xs font-sans font-bold uppercase tracking-widest text-[#534c44]">VOL.01 · ISSUE 06.2026</span></div>
+                <p class="text-xs uppercase tracking-widest mt-1 text-[#534c44] font-bold">World Telemetry Audit Dashboard</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex gap-4 items-center">
+                <span class="bg-[#73d41d] brutal-border px-3 py-1 text-xs font-bold tracking-widest uppercase">BRUTALLY HONEST</span>
+                <div id="authStatusText" class="text-xs font-bold text-[#534c44]">CONNECTING SECURE TELEMETRY...</div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Section -->
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            
+            <!-- Left Column: Input Panel & ASCII Globe -->
+            <section class="lg:col-span-7 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-xs uppercase tracking-widest font-bold text-[#534c44] block mb-2">01 — Core Context Input</span>
+                        <h1 class="serif-title text-5xl md:text-6xl font-black leading-none mb-6">
+                            Your idea,<br>reviewed by someone who <span class="bg-[#73d41d] inline-block px-3 py-1 brutal-border">won't lie.</span>
+                        </h1>
+                        <p class="text-[#534c44] text-xs leading-relaxed max-w-lg font-sans">
+                            Standard feedback is polite because people want to spare your feelings. RoastLab AI identifies the structural failures of your startup model in under ten seconds. No fluff, just mechanics.
+                        </p>
+                    </div>
+                    
+                    <!-- Spinning Cyber-Globe Section -->
+                    <div class="md:col-span-4 hidden md:flex flex-col items-center justify-center border-2 border-black p-4 bg-[#fdfcf6] brutal-shadow relative overflow-hidden">
+                        <div class="absolute top-1 left-2 text-[8px] font-bold text-[#534c44]">WORLD CORES</div>
+                        <pre class="globe-ascii" id="cyberGlobe">
+  .-"''"-.
+ /        \
+|          |
+ \        /
+  '-.__.-'
+                        </pre>
+                        <div class="text-[9px] font-bold tracking-widest text-center mt-2 text-[#0c0806] border-t border-black pt-1 w-full">GEOSPATIAL STACK</div>
+                    </div>
+                </div>
+
+                <!-- Form Fields -->
+                <form id="roastForm" method="POST" action="/" class="space-y-6">
+                    <!-- Dropdowns configuration panel -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase font-bold tracking-widest">Intensity Level</label>
+                            <select name="intensity" id="intensity" class="brutal-border bg-white p-3 font-sans outline-none text-sm brutal-shadow">
+                                <option value="Mild" {% if selected_intensity == 'Mild' %}selected{% endif %}>Mild Critique</option>
+                                <option value="Savage" {% if selected_intensity == 'Savage' %}selected{% endif %}>Savage Breakdown</option>
+                                <option value="Nuclear" {% if selected_intensity == 'Nuclear' %}selected{% endif %}>Nuclear Incineration</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase font-bold tracking-widest">AI Persona</label>
+                            <select name="personality" id="personality" class="brutal-border bg-white p-3 font-sans outline-none text-sm brutal-shadow">
+                                <option value="Tech Bro" {% if selected_personality == 'Tech Bro' %}selected{% endif %}>Silicon Valley VC</option>
+                                <option value="Gordon Ramsay" {% if selected_personality == 'Gordon Ramsay' %}selected{% endif %}>Gordon Ramsay Mode</option>
+                                <option value="Sarcastic Assistant" {% if selected_personality == 'Sarcastic Assistant' %}selected{% endif %}>Sarcastic Assistant</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Input Material Textarea -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs uppercase font-bold tracking-widest">Startup Concept / Pitch Link</label>
+                        <div class="brutal-border brutal-shadow-lg bg-white p-4">
+                            <textarea 
+                                name="user_input" 
+                                id="user_input" 
+                                class="w-full h-44 bg-transparent resize-none outline-none font-sans text-sm leading-relaxed"
+                                placeholder="e.g. A marketplace where retired chefs livestream cooking lessons to people in food deserts..."
+                                maxlength="2000"
+                                required
+                            >{{ user_input }}</textarea>
+                            <div class="flex justify-between items-center mt-3 pt-3 border-t border-[#0c0806] text-xs font-bold text-[#534c44]">
+                                <span id="charCount">0 / 2000</span>
+                                <span>SECURE LOCAL CLOUD active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Try Suggestions -->
+                    <div class="space-y-2">
+                        <span class="text-[10px] uppercase tracking-widest font-bold text-[#534c44]">Or Trigger Sample Model:</span>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" class="border border-[#0c0806] bg-[#fdfcf6] hover:bg-[#73d41d] px-3 py-1.5 text-xs transition-colors" onclick="populateTemplate('An on-demand private helicopter service for dogs requiring extreme luxury transport.')">
+                                Luxury Dog Helicopter
+                            </button>
+                            <button type="button" class="border border-[#0c0806] bg-[#fdfcf6] hover:bg-[#73d41d] px-3 py-1.5 text-xs transition-colors" onclick="populateTemplate('AI agent that analyzes tenant rights to renegotiate rent on local properties.')">
+                                Rent Negotiator AI
+                            </button>
+                            <button type="button" class="border border-[#0c0806] bg-[#fdfcf6] hover:bg-[#73d41d] px-3 py-1.5 text-xs transition-colors" onclick="populateTemplate('A browser extension that automatically replaces images of politicians with kittens.')">
+                                Politician Block Extension
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Ignite Button -->
+                    <button type="submit" class="w-full brutal-btn py-4 text-center text-sm font-bold uppercase tracking-widest brutal-shadow">
+                        Ignite Roast Reactor →
+                    </button>
+                </form>
+            </section>
+
+            <!-- Right Column: Results Stream -->
+            <section class="lg:col-span-5 space-y-6">
+                <!-- Cinematic Loader (Hidden by default, triggered on submit) -->
+                <div id="loadingOverlay" class="hidden brutal-border brutal-shadow-lg p-8 bg-white space-y-6">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs uppercase tracking-widest font-bold text-[#534c44]">Analysing telemetry...</span>
+                        <div class="w-2.5 h-2.5 bg-[#73d41d] rounded-full animate-ping"></div>
+                    </div>
+                    <div class="serif-title text-4xl italic font-black text-center py-6 animate-pulse">composing...</div>
+                    <div class="space-y-3 font-sans text-xs text-[#534c44]">
+                        <div class="flex items-center gap-2"><i data-lucide="shield-alert" class="w-4 h-4 text-orange-500"></i> Parsing business constraints...</div>
+                        <div id="loaderStep2" class="opacity-40 flex items-center gap-2"><i data-lucide="skull" class="w-4 h-4"></i> Simulating market collapse...</div>
+                        <div id="loaderStep3" class="opacity-40 flex items-center gap-2"><i data-lucide="flame" class="w-4 h-4"></i> Generating brutalist critique...</div>
+                    </div>
+                    <div class="h-1 bg-gray-200 overflow-hidden brutal-border">
+                        <div id="loaderProgressBar" class="h-full bg-[#0c0806] transition-all duration-300" style="width: 10%;"></div>
+                    </div>
+                </div>
+
+                <!-- Live Roast Result Output Container -->
+                <div id="printArea" class="space-y-6">
+                    {% if roast_result %}
+                    <div class="brutal-border brutal-shadow-lg p-6 bg-[#fdfcf6] space-y-6">
+                        <div class="flex justify-between items-start gap-4 pb-4 border-b border-[#0c0806]">
+                            <h2 class="serif-title text-3xl font-bold leading-tight">"{{ roast_result.headline }}"</h2>
+                            <div class="border-2 border-[#0c0806] p-3 text-center bg-[#73d41d] flex-shrink-0">
+                                <div class="serif-title text-2xl font-black leading-none">{{ roast_result.score }}</div>
+                                <div class="text-[8px] font-sans font-bold uppercase tracking-wider text-[#0c0806]">Brutality</div>
+                            </div>
+                        </div>
+
+                        <!-- Rows Mapping Breakdown -->
+                        <div class="space-y-4 text-sm">
+                            <div>
+                                <h3 class="text-xs uppercase tracking-widest font-bold text-[#534c44] mb-2">The Roast</h3>
+                                <div class="space-y-2">
+                                    {% for bullet in roast_result.roast_bullets %}
+                                    <div class="flex gap-3 items-start font-sans">
+                                        <span class="text-[#73d41d] font-bold">0{{ loop.index }}</span>
+                                        <p>{{ bullet }}</p>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-200">
+                                <h3 class="text-xs uppercase tracking-widest font-bold text-[#534c44] mb-1">The Brutal Truth</h3>
+                                <p class="text-[#0c0806] leading-relaxed">{{ roast_result.brutal_truth }}</p>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-200">
+                                <h3 class="text-xs uppercase tracking-widest font-bold text-[#534c44] mb-2">What's Worth Saving</h3>
+                                <div class="bg-[#73d41d] brutal-border p-3 text-xs font-bold leading-relaxed text-[#0c0806]">
+                                    {{ roast_result.worth_saving }}
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-200">
+                                <h3 class="text-xs uppercase tracking-widest font-bold text-[#534c44] mb-1">Who Eats Your Lunch</h3>
+                                <p class="text-[#0c0806] leading-relaxed">{{ roast_result.eats_lunch }}</p>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-200">
+                                <h3 class="text-xs uppercase tracking-widest font-bold text-[#534c44] mb-1">The One Move</h3>
+                                <p class="text-[#0c0806] font-bold leading-relaxed">{{ roast_result.one_move }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Export and Utilities Row -->
+                        <div class="flex gap-2 pt-4 border-t border-[#0c0806] justify-between">
+                            <button onclick="window.print()" class="flex items-center gap-1.5 border border-[#0c0806] hover:bg-[#73d41d] px-3 py-1.5 text-xs font-bold">
+                                <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print / PDF
+                            </button>
+                            <button id="saveVerButton" class="flex items-center gap-1.5 border border-[#0c0806] hover:bg-[#73d41d] px-3 py-1.5 text-xs font-bold">
+                                <i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save Verdict
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Floating History Toggle (Bottom Left) -->
+    <div class="fixed bottom-6 left-6 z-40">
+        <button id="toggleDrawerBtn" class="w-14 h-14 bg-white hover:bg-[#73d41d] border-2 border-[#0c0806] rounded-full flex items-center justify-center brutal-shadow-lg transition-transform hover:-translate-y-1">
+            <i data-lucide="history" class="w-6 h-6 text-[#0c0806]"></i>
+        </button>
+    </div>
+
+    <!-- History Drawer Overlay Container -->
+    <div id="drawerOverlay" class="fixed inset-0 bg-[#0c0806]/40 backdrop-blur-xs z-50 hidden transition-opacity duration-300">
+        <div id="drawerContent" class="w-full max-w-md bg-[#f7f5ec] h-full brutal-border border-r border-[#0c0806] flex flex-col justify-between p-6 transform -translate-x-full transition-transform duration-300 ease-out custom-scroll">
+            <div class="space-y-6">
+                <div class="flex justify-between items-center border-b border-[#0c0806] pb-4">
+                    <h3 class="serif-title text-2xl font-bold">Saved Verdicts</h3>
+                    <button id="closeDrawerBtn" class="hover:bg-gray-200 p-1 brutal-border border-[#0c0806] bg-white">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <!-- Interactive History Feed -->
+                <div id="historyList" class="space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scroll">
+                    <!-- Loaded dynamically via JS -->
+                    <div class="text-xs font-bold text-center py-8 text-[#534c44]">No saved verdicts yet. Generate some audits to populate history!</div>
+                </div>
+            </div>
+            <div class="border-t border-[#0c0806] pt-4">
+                <p class="text-[10px] uppercase tracking-widest text-[#534c44] font-bold text-center">RoastLab AI secure local data sandbox</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentic Lead Sign-up Modal -->
+    <div id="signupModal" class="fixed inset-0 bg-[#0c0806]/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#f7f5ec] max-w-md w-full brutal-border brutal-shadow-lg p-6 space-y-6 relative">
+            <button id="closeModalBtn" class="absolute top-4 right-4 hover:bg-gray-200 p-1 border border-black bg-white">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            <div class="text-center space-y-2">
+                <span class="bg-[#73d41d] text-xs font-bold border border-black px-2.5 py-1 uppercase tracking-wider">SAVE YOUR RESULTS</span>
+                <h3 class="serif-title text-3xl font-bold">Sync Verdict History</h3>
+                <p class="text-xs text-[#534c44]">Join over 12,000 founders. Save your verdicts in your private database secure locker permanently to track product developments.</p>
+            </div>
+            <form id="authForm" class="space-y-4">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[10px] uppercase font-bold tracking-widest">Email Address</label>
+                    <input type="email" id="authEmail" class="w-full brutal-border bg-white p-3 font-sans text-sm outline-none" placeholder="e.g. founder@startup.co" required>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[10px] uppercase font-bold tracking-widest">Master Password</label>
+                    <input type="password" id="authPassword" class="w-full brutal-border bg-white p-3 font-sans text-sm outline-none" placeholder="Min. 6 alphanumeric" required>
+                </div>
+                <button type="submit" class="w-full brutal-btn py-3 text-xs uppercase tracking-widest font-bold">
+                    Secure Locked Vault Access
+                </button>
+            </form>
+            <div class="text-center">
+                <p class="text-[9px] text-[#534c44] uppercase tracking-widest font-bold">No spam. Your secrets remain strictly your secrets.</p>
+            </div>
+        </div>
+    </div>
+
+<!-- START: RoastLab Value Proposition Section -->
+<section id="value-proposition" style="display: block; width: 100%; clear: both; background-color: transparent; color: #0c0806; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 100px 24px; box-sizing: border-box;">
+    <div style="max-width: 900px; margin: 0 auto; box-sizing: border-box; text-align: left;">
+        
+        <!-- Massive Section Header -->
+        <div style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #534c44; margin-bottom: 16px;">
+            // STRATEGIC VALIDATION CORE
+        </div>
+        
+        <h2 style="font-family: 'Fraunces', 'Times New Roman', serif; font-size: 4.5rem; font-weight: 900; line-height: 1.05; color: #0c0806; margin: 0 0 32px 0; letter-spacing: -0.03em;">
+            Why Founders Deploy RoastLab Prior to <span style="background-color: #73d41d; color: #0c0806; padding: 0 12px; display: inline-block;">Launch.</span>
+        </h2>
+        
+        <p style="font-size: 1.25rem; line-height: 1.6; color: #2d2a26; margin: 0 0 64px 0; max-width: 800px; font-weight: 400;">
+            Building a business requires absolute clarity. RoastLab acts as an uncompromised, objective algorithmic advisory board. Instead of relying on passive validation from peers or echo chambers, founders drop their frameworks directly into our engine to stress-test their fundamental market assumptions before committing precious engineering hours and capital.
+        </p>
+
+        <!-- High-Contrast Pillars Container -->
+        <div style="display: flex; flex-direction: column; gap: 40px; box-sizing: border-box; border-top: 2px solid #0c0806; padding-top: 40px;">
+            
+            <!-- Pillar 1 -->
+            <div style="display: grid; grid-template-columns: 80px 1fr; gap: 24px; box-sizing: border-box;">
+                <div style="font-size: 1.5rem; font-weight: 800; color: #73d41d; line-height: 1;">
+                    01 //
+                </div>
+                <div>
+                    <h3 style="font-size: 1.35rem; font-weight: 800; color: #0c0806; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Unvarnished Capital Protection
+                    </h3>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #44403c; margin: 0; max-width: 650px;">
+                        Venture capital is expensive, and bootstrapping is high-risk. RoastLab systematically tears down weak value propositions, identifying structural unit-economic flaws and market-entry blindspots before you present to institutional investors.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div style="display: grid; grid-template-columns: 80px 1fr; gap: 24px; box-sizing: border-box;">
+                <div style="font-size: 1.5rem; font-weight: 800; color: #73d41d; line-height: 1;">
+                    02 //
+                </div>
+                <div>
+                    <h3 style="font-size: 1.35rem; font-weight: 800; color: #0c0806; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Accelerated Pivot Mechanics
+                    </h3>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #44403c; margin: 0; max-width: 650px;">
+                        Instead of spending months waiting for real-world user validation or market feedback loops, our model selectors simulate adversarial competitor actions instantly, offering pivot directions in seconds.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div style="display: grid; grid-template-columns: 80px 1fr; gap: 24px; box-sizing: border-box;">
+                <div style="font-size: 1.5rem; font-weight: 800; color: #73d41d; line-height: 1;">
+                    03 //
+                </div>
+                <div>
+                    <h3 style="font-size: 1.35rem; font-weight: 800; color: #0c0806; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Competitive Landscape Mapping
+                    </h3>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #44403c; margin: 0; max-width: 650px;">
+                        RoastLab breaks open hidden saturation vectors in your targeted niche. You discover exactly how multi-framework project architectures or legacy incumbents will react to your product scaffolding strategies.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Micro Meta Footer Info inside section -->
+        <div style="margin-top: 64px; border-top: 1px dashed #0c0806; padding-top: 24px; display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 800; color: #534c44; text-transform: uppercase; letter-spacing: 0.1em;">
+            <div>SYS-REF: LAUNCH-READY-AUDIT</div>
+            <div>VERDICT LOG OVERRIDE ACTIVE</div>
+        </div>
+
+    </div>
+</section>
+<!-- END: RoastLab Value Proposition Section -->
+
+<div class="native-video-wrapper" style="
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000000;
+    overflow: hidden; /* Clips YouTube title bars and controls out of bounds */
+    box-sizing: border-box;
+"
+onmouseenter="engageNativeVideo(this)" 
+onmouseleave="suspendNativeVideo(this)">
+    
+    <iframe class="native-iframe"
+            src="https://www.youtube.com/embed/P3XeG0-Ojn8?enablejsapi=1&controls=0&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1&autoplay=1&mute=1&loop=1&playlist=P3XeG0-Ojn8&vq=hd1080" 
+            title="Business Plan Explainer Stream"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+            style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                transform: scale(1.35);
+                transform-origin: center center;
+            ">
+    </iframe>
+
+    <div class="native-ui-shield" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(12, 8, 6, 0.1) 0%, rgba(12, 8, 6, 0.7) 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 24px;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        box-sizing: border-box;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+    ">
+        
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff; letter-spacing: 0.05em; text-transform: uppercase;">
+                Hover window to activate audio & stream
+            </div>
+            <div style="font-size: 0.65rem; color: rgba(255, 255, 255, 0.3);">
+             
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    /**
+     * Unmutes and plays the buffered video on hover interface coordinates.
+     */
+    function engageNativeVideo(container) {
+        const iframe = container.querySelector('.native-iframe');
+        const shield = container.querySelector('.native-ui-shield');
+        
+        if (iframe && iframe.contentWindow) {
+            // Commands target frame to unmute audio and initiate active rendering 
+            iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        }
+        if (shield) {
+            shield.style.opacity = '0';
+        }
+    }
+
+    /**
+     * Mutes and pauses the streaming thread immediately upon cursor departure.
+     */
+    function suspendNativeVideo(container) {
+        const iframe = container.querySelector('.native-iframe');
+        const shield = container.querySelector('.native-ui-shield');
+        
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        }
+        if (shield) {
+            shield.style.opacity = '1';
+        }
+    }
+</script>
+
+
+<!-- START: High-End Transparent Marquee Review Section -->
+<section id="founder-reviews" style="display: block; width: 100%; clear: both; background-color: transparent; position: relative; padding: 120px 0; overflow: hidden; box-sizing: border-box; font-family: 'JetBrains Mono', ui-monospace, monospace;">
+    
+    <!-- Matrix/ASCII Abstract Background Characters Layer -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.03; font-size: 11px; line-height: 1.4; color: #0c0806; overflow: hidden; user-select: none; z-index: 1;">
+        &lt;AUDIT_LOG_RECORDS&gt; [OK] ############# [λ_FACTOR_ACTIVE] ############# 0x7FFF81A2C3E4 &lt;br&gt;
+        scaffold_init --framework=python --meta=kryonara --verbose [RUNNING] &lt;br&gt;
+        Δ_VECTOR_ALPHA :: 42.1992.811.09 --status=VERDICT_LOG_OVERRIDE_ACTIVE &lt;br&gt;
+        [SYS] Firebase secure shield handshake initialized... 100% stable node &lt;br&gt;
+        ████████████████████████████████ 99.8% SATURATION THREAT CALCULATED &lt;br&gt;
+        &lt;AUDIT_LOG_RECORDS&gt; [OK] ############# [λ_FACTOR_ACTIVE] ############# 0x7FFF81A2C3E4 &lt;br&gt;
+        scaffold_init --framework=python --meta=kryonara --verbose [RUNNING] &lt;br&gt;
+        Δ_VECTOR_ALPHA :: 42.1992.811.09 --status=VERDICT_LOG_OVERRIDE_ACTIVE &lt;br&gt;
+        [SYS] Firebase secure shield handshake initialized... 100% stable node &lt;br&gt;
+        ████████████████████████████████ 99.8% SATURATION THREAT CALCULATED &lt;br&gt;
+        &lt;AUDIT_LOG_RECORDS&gt; [OK] ############# [λ_FACTOR_ACTIVE] ############# 0x7FFF81A2C3E4 &lt;br&gt;
+        scaffold_init --framework=python --meta=kryonara --verbose [RUNNING] &lt;br&gt;
+        Δ_VECTOR_ALPHA :: 42.1992.811.09 --status=VERDICT_LOG_OVERRIDE_ACTIVE &lt;br&gt;
+        [SYS] Firebase secure shield handshake initialized... 100% stable node &lt;br&gt;
+        ████████████████████████████████ 99.8% SATURATION THREAT CALCULATED
+    </div>
+
+    <!-- Section Header Content -->
+    <div style="max-width: 900px; margin: 0 auto 60px auto; padding: 0 24px; position: relative; z-index: 2; text-align: left;">
+        <div style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #534c44; margin-bottom: 16px;">
+            // VERIFIED TELEMETRY LOGS
+        </div>
+        <h2 style="font-family: 'Fraunces', 'Times New Roman', serif; font-size: 3.5rem; font-weight: 900; line-height: 1.1; color: #0c0806; margin: 0; letter-spacing: -0.02em;">
+            Tested by Founders. <br>Approved by <span style="background-color: #73d41d; color: #0c0806; padding: 0 10px; display: inline-block;">Metrics.</span>
+        </h2>
+    </div>
+
+    <!-- Marquee Tracks Style Configuration Blocks -->
+    <style>
+        @keyframes glassMarqueeLeft {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-33.3333%, 0, 0); }
+        }
+        @keyframes glassMarqueeRight {
+            0% { transform: translate3d(-33.3333%, 0, 0); }
+            100% { transform: translate3d(0, 0, 0); }
+        }
+        .marquee-track-1 { display: flex; width: max-content; animation: glassMarqueeLeft 50s linear infinite; }
+        .marquee-track-2 { display: flex; width: max-content; animation: glassMarqueeRight 55s linear infinite; }
+        .marquee-track-1:hover, .marquee-track-2:hover { animation-play-state: paused; }
+    </style>
+
+    <!-- MARQUEE ROW 1: Moving Left -->
+    <div style="width: 100%; overflow: hidden; margin-bottom: 24px; position: relative; z-index: 2;">
+        <div class="marquee-track-1">
+            <!-- Set 1 -->
+            <div style="display: flex; gap: 24px; padding-right: 24px;">
+                <!-- Review 1 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Saved us months of wasted pivoting." 🔄</p>
+                </div>
+                <!-- Review 2 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Brutally honest. Exactly what we needed." 🔥</p>
+                </div>
+                <!-- Review 3 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Found structural flaws in seconds." 🛠️</p>
+                </div>
+                <!-- Review 4 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Better than a $10k consulting firm." 💸</p>
+                </div>
+                <!-- Review 5 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Tore our pitch deck apart—in a good way." 📄</p>
+                </div>
+                <!-- Review 6 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"The metrics dashboard doesn't lie." 📊</p>
+                </div>
+                <!-- Review 7 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Clean, sharp UI and accurate data mapping." 🌐</p>
+                </div>
+                <!-- Review 8 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Unlocked validation layers we missed completely." 🚀</p>
+                </div>
+                <!-- Review 9 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"A critical node in our design sprint pipeline." ⚡</p>
+                </div>
+                <!-- Review 10 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Our ultimate launch readiness protocol." 🏁</p>
+                </div>
+            </div>
+            
+            <!-- Duplicated Track Sequences for Continuous Rendering Loops -->
+            <div style="display: flex; gap: 24px; padding-right: 24px;" aria-hidden="true">
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Saved us months of wasted pivoting." 🔄</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Brutally honest. Exactly what we needed." 🔥</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Found structural flaws in seconds." 🛠️</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Better than a $10k consulting firm." 💸</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Tore our pitch deck apart—in a good way." 📄</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"The metrics dashboard doesn't lie." 📊</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Clean, sharp UI and accurate data mapping." 🌐</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Unlocked validation layers we missed completely." 🚀</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"A critical node in our design sprint pipeline." ⚡</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Our ultimate launch readiness protocol." 🏁</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MARQUEE ROW 2: Moving Right -->
+    <div style="width: 100%; overflow: hidden; position: relative; z-index: 2;">
+        <div class="marquee-track-2">
+            <!-- Set 2 -->
+            <div style="display: flex; gap: 24px; padding-right: 24px;">
+                <!-- Review 11 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Perfect for checking saturations." 🔍</p>
+                </div>
+                <!-- Review 12 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Adversarial model testing is top-tier." 🤖</p>
+                </div>
+                <!-- Review 13 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Protected our initial seed capital run." 🛡️</p>
+                </div>
+                <!-- Review 14 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Zero fluff. Just strategic facts." 📋</p>
+                </div>
+                <!-- Review 15 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"The reality check every startup needs." 🫵</p>
+                </div>
+                <!-- Review 16 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Instant adversarial market scenarios." 🎭</p>
+                </div>
+                <!-- Review 17 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"We ran our app scaffold through it. Epic." 💻</p>
+                </div>
+                <!-- Review 18 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Identified 3 direct copycat systems." 👥</p>
+                </div>
+                <!-- Review 19 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Keeps engineering ego perfectly in check." 🧠</p>
+                </div>
+                <!-- Review 20 -->
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"The ultimate web validation environment." 🎯</p>
+                </div>
+            </div>
+            
+            <!-- Duplicated Track Sequences for Continuous Rendering Loops -->
+            <div style="display: flex; gap: 24px; padding-right: 24px;" aria-hidden="true">
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Perfect for checking saturations." 🔍</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Adversarial model testing is top-tier." 🤖</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Protected our initial seed capital run." 🛡️</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Zero fluff. Just strategic facts." 📋</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"The reality check every startup needs." 🫵</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Instant adversarial market scenarios." 🎭</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"We ran our app scaffold through it. Epic." 💻</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Identified 3 direct copycat systems." 👥</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"Keeps engineering ego perfectly in check." 🧠</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(8px); padding: 24px; border-radius: 8px; width: 320px; box-sizing: border-box;">
+                    <div style="color: #73d41d; font-size: 0.9rem; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: #0c0806; margin: 0 0 12px 0; font-weight: 600;">"The ultimate web validation environment." 🎯</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- END: High-End Transparent Marquee Review Section -->
+
+<section id="kryonara-labs-hub" style="display: block; width: 100%; clear: both; background-color: transparent; color: #0c0806; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 120px 24px; box-sizing: border-box; position: relative; overflow: hidden;">
+    
+    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; box-sizing: border-box;">
+        
+        <div style="box-sizing: border-box;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #534c44; margin-bottom: 24px;">
+                <span style="display: inline-block; width: 6px; height: 6px; background-color: #73d41d; border-radius: 50% !important; box-shadow: 0 0 8px #73d41d;"></span>
+                A Product From Kryonara Labs
+            </div>
+            
+            <h2 style="font-family: 'Fraunces', 'Times New Roman', serif; font-size: 4rem; font-weight: 900; line-height: 1.05; color: #0c0806; margin: 0 0 24px 0; letter-spacing: -0.02em;">
+                Engineering the next breed of <span style="background-color: #73d41d; color: #0c0806; padding: 0 10px; display: inline-block;">AI systems.</span>
+            </h2>
+            
+            <p style="font-size: 1.15rem; line-height: 1.6; color: #2d2a26; margin: 0 0 32px 0; max-width: 600px; font-weight: 400;">
+                RoastLab is forged under the Kryonara design core—delivering modular development pipelines, high-contrast visual environments, and raw algorithmic intelligence to stress-test digital platforms before launch protocols execute.
+            </p>
+            
+            <div style="display: flex; gap: 40px; border-top: 1px dashed #0c0806; padding-top: 24px; box-sizing: border-box;">
+                <div>
+                    <div style="font-size: 0.65rem; font-weight: 800; color: #534c44; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">LAB_ORATION</div>
+                    <div style="font-size: 1.1rem; font-weight: 800; color: #0c0806;">NODE_ARRAY_01</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.65rem; font-weight: 800; color: #534c44; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">ENGINE_CLASS</div>
+                    <div style="font-size: 1.1rem; font-weight: 800; color: #0c0806;">ADVERSARIAL AI</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid #e2e8f0; backdrop-filter: blur(12px) saturate(160%); -webkit-backdrop-filter: blur(12px) saturate(160%); padding: 48px 40px; border-radius: 12px; box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); box-sizing: border-box;">
+            
+            <div style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #0c0806; margin-bottom: 8px;">
+                [SUBSCRIBE TO UPDATES]
+            </div>
+            <h3 style="font-family: 'Fraunces', serif; font-size: 1.75rem; font-weight: 900; color: #0c0806; margin: 0 0 12px 0; letter-spacing: -0.01em;">
+                Join the intelligence loop.
+            </h3>
+            <p style="font-size: 0.85rem; line-height: 1.5; color: #534c44; margin: 0 0 32px 0;">
+                Get direct access to new multi-framework scaffolders, threat updates, and beta intelligence patches dropped straight from the lab.
+            </p>
+
+            <form action="#" method="POST" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 16px; margin: 0; box-sizing: border-box;">
+                
+                <div style="display: flex; flex-direction: column; gap: 6px; box-sizing: border-box;">
+                    <label style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: #0c0806; letter-spacing: 0.05em;">// IDENTIFICATION INTERFACE</label>
+                    <input type="email" placeholder="enter your secure email address" required style="
+                        width: 100%;
+                        background: rgba(255, 255, 255, 0.8);
+                        border: 2px solid #0c0806;
+                        border-radius: 6px;
+                        padding: 14px 16px;
+                        font-family: 'JetBrains Mono', monospace;
+                        font-size: 0.85rem;
+                        color: #0c0806;
+                        box-sizing: border-box;
+                        outline: none;
+                        transition: border-color 0.2s ease;
+                    " onfocus="this.style.borderColor='#73d41d'" onblur="this.style.borderColor='#0c0806'">
+                </div>
+
+                <button type="submit" style="
+                    width: 100%;
+                    background: #0c0806;
+                    color: #ffffff;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 16px;
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 0.9rem;
+                    font-weight: 800;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    cursor: pointer;
+                    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+                    box-sizing: border-box;
+                    margin-top: 8px;
+                " onmouseenter="this.style.background='#73d41d'; this.style.color='#0c0806';" onmouseleave="this.style.background='#0c0806'; this.style.color='#ffffff';">
+                    ENGAGE ACCESS CONSOLE ➔
+                </button>
+                
+            </form>
+
+            <div style="margin-top: 24px; font-size: 0.6rem; color: rgba(83, 76, 68, 0.7); line-height: 1.4; text-align: center;">
+                By engaging, you consent to receive direct automated transmission vectors. Zero clutter. Absolute engineering value.
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+    <footer class="bg-[#0c0806] text-[#f7f5ec] mt-24 py-16 px-6 border-t-4 border-[#73d41d]">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 font-mono">
+        
+        <div class="space-y-4">
+            <div class="serif-title text-3xl font-black tracking-tight text-[#f7f5ec]" style="font-family: 'Fraunces', 'Times New Roman', serif;">
+                Roast<span class="text-[#73d41d]">Lab</span>
+            </div>
+            <p class="text-xs text-gray-400 leading-relaxed font-sans">
+                Evaluating operational models and structural execution metrics with absolute algorithmic objectivity since 2026.
+            </p>
+            
+            <div class="flex gap-4 items-center pt-4">
+                <a href="#" class="text-gray-400 hover:text-[#73d41d] transition-colors" title="X (Twitter)">
+                    <i data-lucide="twitter" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-[#73d41d] transition-colors" title="LinkedIn">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-[#73d41d] transition-colors" title="Instagram">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-[#73d41d] transition-colors" title="YouTube">
+                    <i data-lucide="youtube" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="space-y-4">
+            <h4 class="text-xs uppercase font-black tracking-widest text-[#73d41d]">// Company</h4>
+            <ul class="space-y-2.5 text-xs text-gray-400 font-bold uppercase tracking-wider font-sans">
+                <li><a href="#" class="hover:text-[#73d41d] transition-colors"><span class="font-mono text-[10px] text-gray-600 mr-1">01/</span> Our Manifesto</a></li>
+                <li><a href="#" class="hover:text-[#73d41d] transition-colors"><span class="font-mono text-[10px] text-gray-600 mr-1">02/</span> Enterprise Pricing</a></li>
+                <li><a href="#" class="hover:text-[#73d41d] transition-colors"><span class="font-mono text-[10px] text-gray-600 mr-1">03/</span> The Audit Protocol</a></li>
+                <li><a href="#" class="hover:text-[#73d41d] transition-colors"><span class="font-mono text-[10px] text-gray-600 mr-1">04/</span> Engineering Logs</a></li>
+            </ul>
+        </div>
+
+        <div class="space-y-4">
+            <h4 class="text-xs uppercase font-black tracking-widest text-[#73d41d]">// Compliance</h4>
+            <ul class="space-y-2.5 text-xs text-gray-400 font-bold uppercase tracking-wider font-sans">
+                <li><a href="privacy.html" class="hover:text-[#73d41d] transition-colors"><span class="font-mono text-[10px] text-gray-600 mr-1">λ_</span> Privacy Charter</a></li>
+                <li><a href="terms.html" class="hover:text-[#73d41d] transition-colors"><span class="font-mono text-[10px] text-gray-600 mr-1">λ_</span> Terms of Auditing</a></li>
+                <li><a href="DCL.html" class="hover:text-[#73d41d] transition-colors"><span class="font-mono text-[10px] text-gray-600 mr-1">λ_</span> Data Cryptographic Log</a></li>
+                <li><a href="Model.html" class="hover:text-[#73d41d] transition-colors"><span class="font-mono text-[10px] text-gray-600 mr-1">λ_</span> Model Parameters</a></li>
+            </ul>
+        </div>
+
+        <div class="space-y-4">
+            <h4 class="text-xs uppercase font-black tracking-widest text-[#73d41d]">// Auditing Bulletin</h4>
+            <p class="text-xs text-gray-400 leading-relaxed font-sans">
+                Weekly unhinged teardowns of major silicon valley pivot strategies straight to your secure terminal inbox.
+            </p>
+            <div class="flex border-2 border-[#0c0806] bg-[#16161c] focus-within:border-[#73d41d] transition-all rounded-sm overflow-hidden">
+                <input type="email" placeholder="Secure Email Intakes..." class="bg-transparent px-3 py-2.5 text-xs text-white placeholder-gray-600 outline-none w-full font-mono">
+                <button class="bg-[#73d41d] text-[#0c0806] px-5 font-black text-xs hover:bg-white transition-colors tracking-widest">
+                    ENGAGE
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="max-w-6xl mx-auto border-t border-gray-900 mt-12 pt-8 text-center text-[10px] text-gray-600 uppercase tracking-widest font-bold">
+        &copy; 2026 ROASTLAB INC. ALL VERDICTS PERMANENTLY STORED CRYPTOGRAPHICALLY INSIDE CLIENT. A PRODUCT OF KRYONARA
+    </div>
+</footer>
+    <!-- Firebase SDK Imports & Operations -->
+    <script type="module">
+        // Import Firebase modules securely
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIe6Dc-Se9UQQrfYD3UO6Kfd7MmgueRFo",
+            authDomain: "roastlab-ai.firebaseapp.com",
+            projectId: "roastlab-ai",
+            storageBucket: "roastlab-ai.firebasestorage.app",
+            messagingSenderId: "929385617626",
+            appId: "1:929385617626:web:7bb99ced42966863952de3",
+            measurementId: "G-9DL76MX1JY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const appId = "roastlab-ai";
+        let activeUserId = null;
+        let isSaving = false;
+
+        // Automatically trigger authentic loading flows
+        const form = document.getElementById('roastForm');
+        const overlay = document.getElementById('loadingOverlay');
+        const pb = document.getElementById('loaderProgressBar');
+        const step2 = document.getElementById('loaderStep2');
+        const step3 = document.getElementById('loaderStep3');
+
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                overlay.classList.remove('hidden');
+                form.querySelector('button[type="submit"]').disabled = true;
+                form.querySelector('button[type="submit"]').innerText = "COMPOSING...";
+                
+                // Progressive progress bar animation
+                let progress = 10;
+                const interval = setInterval(() => {
+                    progress += 12;
+                    if (progress >= 40) step2.classList.remove('opacity-40');
+                    if (progress >= 70) step3.classList.remove('opacity-40');
+                    if (progress >= 95) progress = 95;
+                    if (pb) pb.style.width = `${progress}%`;
+                }, 300);
+            });
+        }
+
+        // Live Cyber-Globe Frame Rotation
+        const globeFrames = [
+            `  .-"''"-.  \n /        \\ \n|  *       |\n \\        / \n  '-.__.-'  `,
+            `  .-"''"-.  \n /        \\ \n|    *     |\n \\        / \n  '-.__.-'  `,
+            `  .-"''"-.  \n /        \\ \n|      *   |\n \\        / \n  '-.__.-'  `,
+            `  .-"''"-.  \n /        \\ \n|        * |\n \\        / \n  '-.__.-'  `,
+            `  .-"''"-.  \n / *      \\ \n|          |\n \\        / \n  '-.__.-'  `
+        ];
+        let frameIdx = 0;
+        setInterval(() => {
+            const globeEl = document.getElementById('cyberGlobe');
+            if (globeEl) {
+                globeEl.textContent = globeFrames[frameIdx];
+                frameIdx = (frameIdx + 1) % globeFrames.length;
+            }
+        }, 300);
+
+        // Populate helper template logic
+        window.populateTemplate = function(val) {
+            const textarea = document.getElementById('user_input');
+            if (textarea) {
+                textarea.value = val;
+                document.getElementById('charCount').innerText = `${val.length} / 2000`;
+            }
+        };
+
+        // Track char counter
+        const textInput = document.getElementById('user_input');
+        if (textInput) {
+            textInput.addEventListener('input', (e) => {
+                document.getElementById('charCount').innerText = `${e.target.value.length} / 2000`;
+            });
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                // Silently sign-in anonymously to create an active sandbox workspace
+                await signInAnonymously(auth).catch(err => console.error("Anonymous authentication error:", err));
+            } else {
+                activeUserId = user.uid;
+                const statusText = user.isAnonymous ? "SECURE LOCAL STORAGE active" : `SECURED ACCOUNT VAULT: ${user.email}`;
+                document.getElementById('authStatusText').innerText = statusText;
+                
+                // Pull and render saved history
+                await refreshHistory();
+            }
+        });
+
+        // Trigger Save Current Verdict
+        const saveBtn = document.getElementById('saveVerButton');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', async () => {
+                if (isSaving || !activeUserId) return;
+                isSaving = true;
+                saveBtn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Saving...`;
+                lucide.createIcons();
+
+                // Build verdict object from current rendered variables
+                const currentVerdict = {
+                    headline: "{{ roast_result.headline if roast_result else '' }}",
+                    score: parseInt("{{ roast_result.score if roast_result else 0 }}") || 0,
+                    roast_bullets: JSON.parse(`{{ roast_result.roast_bullets | tojson | safe if roast_result else "[]" }}`),
+                    brutal_truth: "{{ roast_result.brutal_truth if roast_result else '' }}",
+                    worth_saving: "{{ roast_result.worth_saving if roast_result else '' }}",
+                    eats_lunch: "{{ roast_result.eats_lunch if roast_result else '' }}",
+                    one_move: "{{ roast_result.one_move if roast_result else '' }}",
+                    timestamp: Date.now()
+                };
+
+                // RULE 1: STRICT PATH FOR SECURITY PERMISSIONS
+                const collectionPath = `artifacts/${appId}/users/${activeUserId}/verdicts`;
+                try {
+                    await addDoc(collection(db, collectionPath), currentVerdict);
+                    saveBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Saved Successfully`;
+                    lucide.createIcons();
+                    await refreshHistory();
+
+                    // Check if they are anonymous, show the Signup Modal after their first success to hook engagement!
+                    if (auth.currentUser && auth.currentUser.isAnonymous) {
+                        setTimeout(() => {
+                            document.getElementById('signupModal').classList.remove('hidden');
+                        }, 1200);
+                    }
+                } catch (e) {
+                    console.error("Firestore Save Error: ", e);
+                    saveBtn.innerHTML = `<i data-lucide="x" class="w-3.5 h-3.5"></i> Save Error`;
+                    lucide.createIcons();
+                }
+                setTimeout(() => {
+                    saveBtn.innerHTML = `<i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save Verdict`;
+                    lucide.createIcons();
+                    isSaving = false;
+                }, 4000);
+            });
+        }
+
+        async function refreshHistory() {
+            if (!activeUserId) return;
+            const collectionPath = `artifacts/${appId}/users/${activeUserId}/verdicts`;
+            
+            try {
+                // Fetch basic logs (RULE 2: Fetch raw and sort locally inside memory)
+                const snapshot = await getDocs(collection(db, collectionPath));
+                const list = [];
+                snapshot.forEach(docSnap => {
+                    list.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                // Sort newest first
+                list.sort((a, b) => b.timestamp - a.timestamp);
+
+                const container = document.getElementById('historyList');
+                if (!container) return;
+                
+                container.innerHTML = "";
+
+                if (list.length === 0) {
+                    container.innerHTML = `<div class="text-xs font-bold text-center py-8 text-[#534c44]">No saved verdicts yet. Press 'Save Verdict' on the results page!</div>`;
+                    return;
+                }
+
+                list.forEach((item) => {
+                    const row = document.createElement('div');
+                    row.className = "brutal-border bg-white p-3 space-y-2 relative brutal-shadow transition-transform hover:-translate-y-0.5";
+                    row.innerHTML = `
+                        <div class="flex justify-between items-start gap-4">
+                            <h4 class="font-bold text-xs leading-snug">${item.headline || 'Verdict Teardown'}</h4>
+                            <span class="bg-[#73d41d] font-bold text-[10px] brutal-border px-1.5 py-0.5 leading-none">${item.score}/100</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-[10px] font-bold text-[#534c44]">
+                            <span>${new Date(item.timestamp).toLocaleDateString()}</span>
+                            <div class="flex gap-2">
+                                <button class="hover:text-red-500 delete-btn" data-id="${item.id}">Delete</button>
+                                <span>|</span>
+                                <button class="hover:text-blue-500 export-btn" data-headline="${item.headline || 'Verdict'}" data-score="${item.score}" data-truth="${item.brutal_truth || ''}">PDF</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                });
+
+                // Attach event actions
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const id = e.target.getAttribute('data-id');
+                        const docRef = doc(db, `artifacts/${appId}/users/${activeUserId}/verdicts`, id);
+                        await deleteDoc(docRef);
+                        await refreshHistory();
+                    });
+                });
+
+                document.querySelectorAll('.export-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const headline = e.target.getAttribute('data-headline');
+                        const score = e.target.getAttribute('data-score');
+                        const truth = e.target.getAttribute('data-truth');
+                        
+                        // Render simple temporary printable page format cleanly
+                        const opt = window.open('', '_blank');
+                        opt.document.write(`
+                            <html>
+                            <head>
+                                <title>RoastLab AI - export verdict</title>
+                                <style>
+                                    body { font-family: monospace; background: #f7f5ec; color: #0c0806; padding: 40px; }
+                                    .wrapper { border: 2px solid #0c0806; padding: 30px; background: #fff; max-width: 600px; margin: auto; }
+                                    h1 { border-bottom: 2px solid #0c0806; padding-bottom: 10px; }
+                                    .score { font-size: 24px; font-weight: bold; background: #73d41d; display: inline-block; padding: 5px 10px; margin: 15px 0; border: 2px solid #0c0806; }
+                                    p { line-height: 1.6; }
+                                </style>
+                            </head>
+                            <body>
+                                <div class="wrapper">
+                                    <h1>RoastLab: ${headline}</h1>
+                                    <div class="score">BRUTALITY SCORE: ${score}/100</div>
+                                    <h3>BRUTAL TRUTH PROTOCOL</h3>
+                                    <p>${truth}</p>
+                                </div>
+                            </body>
+                            </html>
+                        `);
+                        opt.document.close();
+                        opt.print();
+                    });
+                });
+
+            } catch (err) {
+                console.error("History fetch error:", err);
+            }
+        }
+
+        // SignUp & Account linkage Form integration
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            try {
+                // Link current anonymous authentication to a secure email/password setup
+                await createUserWithEmailAndPassword(auth, email, password);
+                document.getElementById('signupModal').classList.add('hidden');
+                document.getElementById('authStatusText').innerText = `SECURED ACCOUNT VAULT: ${email}`;
+            } catch (err) {
+                // If account exists, fall back to simple sign in
+                if (err.code === 'auth/email-already-in-use') {
+                    await signInWithEmailAndPassword(auth, email, password)
+                        .then(() => {
+                            document.getElementById('signupModal').classList.add('hidden');
+                        })
+                        .catch(loginErr => {
+                            alert("Authentication failure: " + loginErr.message);
+                        });
+                } else {
+                    alert("Failure securing details: " + err.message);
+                }
+            }
+        });
+
+        // Toggle Drawer Elements
+        const drawer = document.getElementById('drawerOverlay');
+        const content = document.getElementById('drawerContent');
+        document.getElementById('toggleDrawerBtn').addEventListener('click', () => {
+            drawer.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('-translate-x-full');
+            }, 50);
+        });
+
+        const closeDrawer = () => {
+            content.classList.add('-translate-x-full');
+            setTimeout(() => {
+                drawer.classList.add('hidden');
+            }, 300);
+        };
+        document.getElementById('closeDrawerBtn').addEventListener('click', closeDrawer);
+        drawer.addEventListener('click', (e) => { if (e.target === drawer) closeDrawer(); });
+
+        // Trigger sign up modal dismiss
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            document.getElementById('signupModal').classList.add('hidden');
+        });
+
+        // Run Icons initialisation once layout loaded
+        lucide.createIcons();
+    </script>
+</body>
+</html>

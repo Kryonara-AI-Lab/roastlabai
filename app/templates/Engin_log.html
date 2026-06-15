@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoastLab — Engineering Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f4f3ef] text-[#0c0806] font-mono p-12">
+    <div class="max-w-3xl mx-auto space-y-8">
+        <header class="flex justify-between items-end border-b-4 border-black pb-8 mb-12">
+            <div>
+                <a href="/" class="text-xs uppercase font-bold tracking-widest text-[#555555] hover:text-[#73d41d] flex items-center gap-2 mb-3">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Return to Terminal Portal
+                </a>
+                <h1 class="font-serif text-5xl font-black">Engineering <span class="acid-highlight bg-[#73d41d] px-2">Logs</span></h1>
+            </div>
+            <div class="text-right text-xs text-[#555555] font-bold">
+                <div>DEPLOYMENT STABLE</div>
+                <div>SYSTEM LOG LEVEL 4</div>
+            </div>
+        </header>
+        
+        <main class="space-y-4">
+            <div class="border border-black p-4 bg-white font-mono text-xs">
+                <div class="text-gray-400">[2026-06-15 14:12:44 UTC] - DEPLOYMENT SUCCESS</div>
+                <div class="font-bold text-black">&gt; Successfully initialized active OpenRouter pipeline nodes with 0 errors.</div>
+            </div>
+            <div class="border border-black p-4 bg-white font-mono text-xs">
+                <div class="text-gray-400">[2026-06-15 14:26:10 UTC] - FIREBASE SECURE PORT CONNECTED</div>
+                <div class="font-bold text-black">&gt; Firebase Firestore listeners synced with 'roastlab-ai' datastore securely.</div>
+            </div>
+            <div class="border border-black p-4 bg-white font-mono text-xs">
+                <div class="text-gray-400">[2026-06-15 15:02:50 UTC] - DYNAMIC TEMPLATES READY</div>
+                <div class="font-bold text-black">&gt; Dynamic PBD conversion engine using lightweight client-side jsPDF assets verified.</div>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

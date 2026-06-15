@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoastLab — The Audit Protocol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f4f3ef] text-[#0c0806] font-mono p-12">
+    <div class="max-w-3xl mx-auto space-y-8">
+        <header class="flex justify-between items-end border-b-4 border-black pb-8 mb-12">
+            <div>
+                <a href="/" class="text-xs uppercase font-bold tracking-widest text-[#555555] hover:text-[#73d41d] flex items-center gap-2 mb-3">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Return to Terminal Portal
+                </a>
+                <h1 class="font-serif text-5xl font-black">The Audit <span class="acid-highlight bg-[#73d41d] px-2">Protocol</span></h1>
+            </div>
+            <div class="text-right text-xs text-[#555555] font-bold">
+                <div>COMPLIANCE STATUS</div>
+                <div>SECURED STANDARD</div>
+            </div>
+        </header>
+        
+        <main class="space-y-6 text-sm leading-relaxed">
+            <p class="font-serif text-2xl leading-normal">
+                Standard audit protocol metrics are governed by systematic context filtering layers.
+            </p>
+            <p>
+                Each pitch is run through context checks utilizing three standard semantic benchmarks:
+            </p>
+            <ul class="space-y-3 font-bold border-t border-b border-black py-4 my-6">
+                <li>01 // REVENUE VIABILITY MATRIX: Assessing if consumers actually care about the problem segment.</li>
+                <li>02 // COMPETITIVE DENSITY METRICS: Mapping existing features on mainstream operating systems that solve the issue for free.</li>
+                <li>03 // DISTRACTION AND HOOK FALLACIES: Tagging gamified interfaces that fail to create actual core utility value.</li>
+            </ul>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

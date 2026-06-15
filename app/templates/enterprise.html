@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoastLab — Enterprise Pricing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f4f3ef] text-[#0c0806] font-mono p-12">
+    <div class="max-w-4xl mx-auto space-y-8">
+        <header class="flex justify-between items-end border-b-4 border-black pb-8 mb-12">
+            <div>
+                <a href="/" class="text-xs uppercase font-bold tracking-widest text-[#555555] hover:text-[#73d41d] flex items-center gap-2 mb-3">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Return to Terminal Portal
+                </a>
+                <h1 class="font-serif text-5xl font-black">Enterprise <span class="acid-highlight bg-[#73d41d] px-2">Tiers</span></h1>
+            </div>
+            <div class="text-right text-xs text-[#555555] font-bold">
+                <div>VERSION: 2.14</div>
+                <div>SCALED ENTERPRISE</div>
+            </div>
+        </header>
+        
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_rgba(0,0,0,1)]">
+                <span class="bg-[#73d41d] px-2.5 py-1 text-xs font-black border border-black">SOCIETY TIER</span>
+                <h3 class="font-serif text-3xl font-black mt-4">$0 / FREE</h3>
+                <p class="text-xs text-gray-500 mt-1">For bootstrapped builders navigating initial conceptual alignment.</p>
+                <ul class="space-y-2 text-xs font-bold mt-6 border-t border-gray-200 pt-4">
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#73d41d]"></i> Ephemeral Web Reviews</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#73d41d]"></i> Standard Response Speeds</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#73d41d]"></i> Basic PDF Export formats</li>
+                </ul>
+            </div>
+            <div class="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_rgba(0,0,0,1)]">
+                <span class="bg-black text-[#73d41d] px-2.5 py-1 text-xs font-black border border-black">ENTERPRISE CORE</span>
+                <h3 class="font-serif text-3xl font-black mt-4">$299 / MONTH</h3>
+                <p class="text-xs text-gray-500 mt-1">For accelerators, studio programs, and seed-fund intelligence layers.</p>
+                <ul class="space-y-2 text-xs font-bold mt-6 border-t border-gray-200 pt-4">
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#73d41d]"></i> Endless API Pipeline queries</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#73d41d]"></i> Multi-format Project Brief Documents (PBD)</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#73d41d]"></i> Sovereign Cryptographic Logs</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
