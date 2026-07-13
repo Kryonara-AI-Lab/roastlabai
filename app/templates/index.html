@@ -335,7 +335,30 @@
 
                             <div class="pt-4 border-t border-gray-200">
                                 <h3 class="text-xs uppercase tracking-widest font-bold text-[#534c44] mb-1">The One Move</h3>
-                                <p class="text-[#0c0806] font-bold leading-relaxed">{{ roast_result.one_move }}</p>
+                                <p class="text-[#0c0806] font-bold leading-relaxed mb-4">{{ roast_result.one_move }}</p>
+                            </div>
+
+                            <!-- Interactive Chat & Tell Me More Section -->
+                            <div class="pt-4 border-t border-gray-200" id="chatSection">
+                                <div id="tellMeMoreWrapper">
+                                    <button type="button" id="tellMeMoreBtn" class="flex items-center gap-1.5 bg-[#73d41d] brutal-border px-3 py-2 text-xs font-bold uppercase hover:bg-black hover:text-white transition-colors cursor-pointer">
+                                        <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Tell me more
+                                    </button>
+                                </div>
+                                <div id="chatActiveContainer" class="hidden space-y-4">
+                                    <h3 class="text-xs uppercase tracking-widest font-bold text-[#534c44] mb-2">// Interactive Session Stream</h3>
+                                    <div id="roastlabChatBox" class="brutal-border bg-white p-3 max-h-60 overflow-y-auto space-y-3 font-sans text-xs">
+                                        <!-- Messages get appended dynamically -->
+                                    </div>
+                                    <div id="chatLoader" class="hidden text-[10px] text-gray-500 font-bold animate-pulse">// AI is composing advice...</div>
+                                    <!-- Dynamic chat input panel -->
+                                    <div class="flex brutal-border bg-white focus-within:border-[#73d41d] transition-all rounded-sm overflow-hidden">
+                                        <input type="text" id="chatInputText" placeholder="Enter your mind and send..." class="bg-transparent px-3 py-2 text-xs text-black outline-none w-full font-mono">
+                                        <button id="sendChatBtn" class="bg-[#0c0806] text-[#73d41d] px-4 font-black text-xs hover:bg-[#73d41d] hover:text-[#0c0806] transition-colors flex items-center justify-center cursor-pointer" title="Send message to AI">
+                                            <i data-lucide="corner-right-up" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -405,6 +428,31 @@
             </div>
             <div class="border-t border-[#0c0806] pt-4">
                 <p class="text-[10px] uppercase tracking-widest text-[#534c44] font-bold text-center">RoastLab AI secure local data sandbox</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tell Me More Input Modal Popup -->
+    <div id="tellMeMoreModal" class="fixed inset-0 bg-[#0c0806]/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#f7f5ec] max-w-md w-full brutal-border brutal-shadow-lg p-6 space-y-6 relative">
+            <button id="closeTellMeMoreModalBtn" class="absolute top-4 right-4 hover:bg-gray-200 p-1 border border-black bg-white cursor-pointer">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            <div class="text-center space-y-2">
+                <span class="bg-[#73d41d] text-xs font-bold border border-black px-2.5 py-1 uppercase tracking-wider">TELL ME MORE</span>
+                <h3 class="serif-title text-3xl font-bold">Got anything in mind?</h3>
+                <p class="text-xs text-[#534c44]">Enter your thoughts, questions, or ideas if you have anything specific, or simply hit Continue to let the AI expand automatically.</p>
+            </div>
+            <div class="space-y-4">
+                <textarea id="tellMeMoreInput" class="w-full h-24 bg-white brutal-border p-3 font-sans text-xs outline-none focus:border-[#73d41d] resize-none" placeholder="e.g. How can I scale my user acquisition with $0 budget?"></textarea>
+                <div class="flex gap-3">
+                    <button id="cancelTellMeMoreBtn" class="w-1/2 bg-white hover:bg-gray-100 text-black font-bold py-3 text-xs uppercase tracking-widest border-2 border-black cursor-pointer">
+                        Cancel
+                    </button>
+                    <button id="confirmTellMeMoreBtn" class="w-1/2 bg-[#73d41d] hover:bg-black hover:text-white text-[#0c0806] font-bold py-3 text-xs uppercase tracking-widest border-2 border-black cursor-pointer">
+                        Continue
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1108,6 +1156,120 @@
                     isSaving = false;
                 }, 4000);
                 {% endif %}
+            });
+        }
+
+        // --- Interactive Multi-Turn Chat Functionality ---
+        const tellMeMoreBtn = document.getElementById("tellMeMoreBtn");
+        const tellMeMoreModal = document.getElementById("tellMeMoreModal");
+        const closeTellMeMoreModalBtn = document.getElementById("closeTellMeMoreModalBtn");
+        const cancelTellMeMoreBtn = document.getElementById("cancelTellMeMoreBtn");
+        const confirmTellMeMoreBtn = document.getElementById("confirmTellMeMoreBtn");
+        const tellMeMoreInput = document.getElementById("tellMeMoreInput");
+
+        const chatActiveContainer = document.getElementById("chatActiveContainer");
+        const tellMeMoreWrapper = document.getElementById("tellMeMoreWrapper");
+        const roastlabChatBox = document.getElementById("roastlabChatBox");
+        const chatLoader = document.getElementById("chatLoader");
+        const chatInputText = document.getElementById("chatInputText");
+        const sendChatBtn = document.getElementById("sendChatBtn");
+
+        let chatHistory = [];
+
+        if (tellMeMoreBtn) {
+            tellMeMoreBtn.addEventListener("click", () => {
+                tellMeMoreModal.classList.remove("hidden");
+            });
+        }
+
+        const closeTellMeMoreModal = () => {
+            tellMeMoreModal.classList.add("hidden");
+        };
+
+        if (closeTellMeMoreModalBtn) closeTellMeMoreModalBtn.addEventListener("click", closeTellMeMoreModal);
+        if (cancelTellMeMoreBtn) cancelTellMeMoreBtn.addEventListener("click", closeTellMeMoreModal);
+
+        const appendChatMessage = (role, content) => {
+            const msgDiv = document.createElement("div");
+            msgDiv.className = "p-2 border-l-2 " + (role === "user" ? "border-black bg-gray-100" : "border-[#73d41d] bg-[#f7f5ec]");
+            msgDiv.innerHTML = `
+                <div class="font-bold uppercase text-[9px] mb-1 tracking-wider ${role === 'user' ? 'text-black' : 'text-[#73d41d]'}">
+                    // ${role === 'user' ? 'User Idea Developer' : 'AI Strategic Critic'}
+                </div>
+                <div class="leading-relaxed whitespace-pre-wrap">${content}</div>
+            `;
+            roastlabChatBox.appendChild(msgDiv);
+            roastlabChatBox.scrollTop = roastlabChatBox.scrollHeight;
+        };
+
+        const sendChatMessageToServer = async (message) => {
+            chatLoader.classList.remove("hidden");
+            appendChatMessage("user", message);
+
+            const payload = {
+                user_input: "{{ user_input }}",
+                new_message: message,
+                history: chatHistory,
+                personality: "{{ selected_personality }}",
+                intensity: "{{ selected_intensity }}"
+            };
+
+            // Push to local session history
+            chatHistory.push({ role: "user", content: message });
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                chatLoader.classList.add("hidden");
+
+                if (data.reply) {
+                    appendChatMessage("assistant", data.reply);
+                    chatHistory.push({ role: "assistant", content: data.reply });
+                } else {
+                    appendChatMessage("assistant", "[Error] AI failed to process command stream.");
+                }
+            } catch (err) {
+                chatLoader.classList.add("hidden");
+                appendChatMessage("assistant", "[Connection Timeout] Server link severed.");
+            }
+        };
+
+        if (confirmTellMeMoreBtn) {
+            confirmTellMeMoreBtn.addEventListener("click", async () => {
+                closeTellMeMoreModal();
+                tellMeMoreWrapper.classList.add("hidden");
+                chatActiveContainer.classList.remove("hidden");
+
+                let initialMsg = tellMeMoreInput.value.trim();
+                if (!initialMsg) {
+                    initialMsg = "Please tell me more about how to achieve this startup, detail a roadmap, or outline key development milestones.";
+                }
+                await sendChatMessageToServer(initialMsg);
+                tellMeMoreInput.value = "";
+            });
+        }
+
+        if (sendChatBtn) {
+            sendChatBtn.addEventListener("click", async () => {
+                const message = chatInputText.value.trim();
+                if (!message) return;
+                chatInputText.value = "";
+                await sendChatMessageToServer(message);
+            });
+        }
+
+        if (chatInputText) {
+            chatInputText.addEventListener("keydown", async (e) => {
+                if (e.key === "Enter") {
+                    const message = chatInputText.value.trim();
+                    if (!message) return;
+                    chatInputText.value = "";
+                    await sendChatMessageToServer(message);
+                }
             });
         }
 
