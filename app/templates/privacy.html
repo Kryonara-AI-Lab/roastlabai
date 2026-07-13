@@ -3,133 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoastLab — Brutally Honest AI Startup Audits</title>
-    <!-- Tailwind CSS for utility grids -->
+    <title>RoastLab — Privacy Charter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Premium Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;700&display=swap">
-    <!-- Lucide Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
         :root {
-            --paper: #f7f5ec;
+            --paper: #f4f3ef;
             --ink: #0c0806;
             --acid: #73d41d;
-            --card: #fdfcf6;
-            --muted-foreground: #534c44;
-            --font-sans: 'JetBrains Mono', monospace;
-            --font-serif: 'Fraunces', serif;
         }
-
         body {
             background-color: var(--paper);
             color: var(--ink);
-            font-family: var(--font-sans);
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        .serif-title {
-            font-family: var(--font-serif);
-        }
-
-        /* Ticker tape visual layout */
-        .ticker-wrapper {
-            background-color: var(--ink);
-            color: var(--paper);
-            border-bottom: 2px solid var(--ink);
-            font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            overflow: hidden;
-            white-space: nowrap;
-            padding: 8px 0;
-        }
-
-        .ticker-content {
-            display: inline-block;
-            animation: scroll-ticker 30s linear infinite;
-        }
-
-        @keyframes scroll-ticker {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* Brutalist borders */
-        .brutal-border {
-            border: 2px solid var(--ink);
-        }
-
-        .brutal-shadow {
-            box-shadow: 4px 4px 0px 0px var(--ink);
-        }
-
-        .brutal-shadow-lg {
-            box-shadow: 8px 8px 0px 0px var(--ink);
-        }
-
-        .brutal-btn {
-            background-color: var(--ink);
-            color: var(--paper);
-            border: 2px solid var(--ink);
-            transition: all 0.15s cubic-bezier(0.16, 1, 0.32, 1);
-        }
-
-        .brutal-btn:hover {
-            background-color: var(--acid);
-            color: var(--ink);
-            transform: translate(-2px, -2px);
-            box-shadow: 4px 4px 0px 0px var(--ink);
-        }
-
-        .brutal-btn:active {
-            transform: translate(0px, 0px);
-            box-shadow: 0px 0px 0px 0px var(--ink);
-        }
-
-        /* ASCII globe animation */
-        .globe-ascii {
-            font-size: 8px;
-            line-height: 8px;
-            letter-spacing: 1px;
-            font-weight: bold;
-            color: var(--ink);
-            white-space: pre;
-            opacity: 0.85;
-            user-select: none;
-        }
-
-        /* Custom Scrollbar for Drawer */
-        .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scroll::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background-color: var(--ink);
-        }
-
-        /* Grid scanline overlays */
-        .scanlines {
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.04) 50%
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between relative">
-    <div class="scanlines absolute inset-0 z-50 pointer-events-none opacity-40"></div>
+<body class="p-6 md:p-12 min-h-screen">
+    <div class="max-w-3xl mx-auto space-y-8">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-end border-b-4 border-black pb-8 mb-12">
+            <div>
+                <a href="/" class="text-xs uppercase font-bold tracking-widest text-[#555555] hover:text-[#73d41d] flex items-center gap-2 mb-3 transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Return to Terminal Portal
+                </a>
+                <h1 class="font-serif text-5xl font-black tracking-tight" style="font-family: 'Fraunces', serif;">Privacy <span class="bg-[#73d41d] px-2 inline-block">Charter</span></h1>
+            </div>
+            <div class="text-left md:text-right text-xs text-[#555555] font-bold mt-4 md:mt-0">
+                <div>SYSTEM STATUS: SHIELD ACTIVE</div>
+                <div>SECURE EPHEMERAL TELEMETRY</div>
+            </div>
+        </header>
 
-    <!-- Ticker Tape Top Banner -->
-    <div class="ticker-wrapper">
-        <div class="ticker-content">
-            ✦ GLOBAL ROAST REACTOR ACTIVE ✦ MONITORED BREAKPOINTS: SILICON VALLEY [DELUSIONAL] ✦ TOKYO [CONSOLIDATING] ✦ LONDON [DIVERSIFYING] ✦ SHANGHAI [OVERHEATING] ✦ CURRENT TRANSACTION ID: #RL-2026-928A ✦ MEMORY OVERHEAD: 24.8% ✦ COMPILING AUTOMATED CRITIQUES ✦ GLOBAL ROAST REACTOR ACTIVE ✦
-        </div>
+        <main class="space-y-6 text-sm leading-relaxed">
+            <p class="font-serif text-xl md:text-2xl leading-normal" style="font-family: 'Fraunces', serif;">
+                "Absolute telemetry isolation. Your ideas and intellectual structures are filtered ephemerally and cryptographically."
+            </p>
+
+            <section class="space-y-4">
+                <h2 class="text-base font-bold uppercase tracking-wider text-black border-b border-black pb-1">// 1. Ephemeral Processing Directive</h2>
+                <p>
+                    RoastLab processes user inputs on an ephemeral execution pipeline. When you present an idea, pitch deck description, or architectural concept to the Roast Reactor, the payload is parsed entirely inside memory space and dispatched securely via encrypted TLS v1.3 protocols to OpenAI/OpenRouter APIs. We do not retain local or permanent database copies of your pitch data unless you explicitly trigger the "Save Verdict" protocol inside your user-secured cryptographic workspace.
+                </p>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-base font-bold uppercase tracking-wider text-black border-b border-black pb-1">// 2. Firebase Workspace Isolation</h2>
+                <p>
+                    Upon saving a verdict, the object payload is stored in Google Cloud Firestore using secure client-side database rules. Data is strictly isolated beneath directories bound directly to your user identifier (<code>artifacts/roastlab-ai/users/${uid}/verdicts</code>). No third party, competitor, or global administrator possesses query access to these segments without master user-authenticated token exchanges.
+                </p>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-base font-bold uppercase tracking-wider text-black border-b border-black pb-1">// 3. Third-Party Vector Dispatches</h2>
+                <p>
+                    Our core system leverages open models and third-party API configurations to compute evaluations. No telemetry is shared with external commercial data brokers, advertisement retargeting algorithms, or automated audience classification tools.
+                </p>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-base font-bold uppercase tracking-wider text-black border-b border-black pb-1">// 4. Client Control and Purging Logs</h2>
+                <p>
+                    You retain the continuous, unrestricted right to permanently purge your evaluations. Deleting any saved verdict from the History Drawer sends an immediate transaction override directly to Firestore, executing an atomic delete operation on the database node.
+                </p>
+            </section>
+
+            <div class="bg-black text-white p-6 font-mono text-xs space-y-1">
+                <div>[SECURE LOCAL SHELL ACTIVE]</div>
+                <div>[EPHEMERAL TIMEOUT] 10 SECONDS TO MEMORY SANITIZATION</div>
+                <div>[COMPLIANCE DECREE] ENTIRELY ZERO ADVERTISING FOOTPRINTS</div>
+            </div>
+        </main>
     </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
