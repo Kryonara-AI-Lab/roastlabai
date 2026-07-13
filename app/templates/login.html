@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoastLab — Secure Vault Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Favicon Set -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+    <style>
+        :root {
+            --paper: #f7f5ec;
+            --ink: #0c0806;
+            --acid: #73d41d;
+            --font-sans: 'JetBrains Mono', monospace;
+            --font-serif: 'Fraunces', serif;
+        }
+        body {
+            background-color: var(--ink);
+            color: var(--paper);
+            font-family: var(--font-sans);
+        }
+        .brutal-border {
+            border: 2px solid var(--paper);
+        }
+        .brutal-shadow {
+            box-shadow: 4px 4px 0px 0px var(--acid);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-center items-center p-4">
+    <div class="max-w-md w-full bg-[#16161c] brutal-border brutal-shadow p-8 space-y-6">
+        <div class="text-center space-y-2 border-b-2 border-dashed border-[#534c44] pb-6">
+            <a href="/" class="text-xs uppercase font-bold tracking-widest text-gray-400 hover:text-[#73d41d] flex items-center justify-center gap-2 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to terminal
+            </a>
+            <h1 class="font-serif text-4xl font-black tracking-tight text-white mt-4" style="font-family: 'Fraunces', serif;">Vault <span class="text-[#73d41d]">Access</span></h1>
+            <p class="text-xs text-gray-400">Decrypt your private database secure locker permanently to track product developments</p>
+        </div>
+
+        {% if error %}
+        <div class="bg-red-950 text-red-300 border border-red-800 p-3 text-xs font-bold uppercase tracking-wider">
+            [ERROR] {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/login" method="POST" class="space-y-4">
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] uppercase font-bold tracking-widest text-gray-400">// Email Address</label>
+                <input type="email" name="email" class="w-full bg-[#0c0806] brutal-border p-3 text-sm text-white outline-none focus:border-[#73d41d] transition-colors" placeholder="founder@startup.co" required>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <div class="flex justify-between items-center">
+                    <label class="text-[10px] uppercase font-bold tracking-widest text-gray-400">// Password</label>
+                    <a href="#" onclick="alert('Forgot password function is currently under engineering configuration. Please contact admin@roastlab.ai for manual override.')" class="text-[9px] text-[#534c44] hover:text-[#73d41d] uppercase tracking-widest font-bold">Forgot password? [TODO]</a>
+                </div>
+                <input type="password" name="password" class="w-full bg-[#0c0806] brutal-border p-3 text-sm text-white outline-none focus:border-[#73d41d] transition-colors" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="w-full bg-[#73d41d] text-[#0c0806] font-bold py-3.5 px-4 text-xs uppercase tracking-widest hover:bg-white transition-colors cursor-pointer border-2 border-black">
+                Decrypt and Sync Vault
+            </button>
+        </form>
+
+        <div class="text-center pt-4 border-t border-dashed border-[#534c44] text-xs text-gray-400">
+            Don't have a secured vault? <a href="/signup" class="text-[#73d41d] hover:underline font-bold">Create One Here</a>
+        </div>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

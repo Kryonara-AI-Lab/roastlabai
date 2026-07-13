@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;700&display=swap">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Favicon Set -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
 
     <style>
         :root {
@@ -128,11 +134,7 @@
     <div class="scanlines absolute inset-0 z-50 pointer-events-none opacity-40"></div>
 
     <!-- Ticker Tape Top Banner -->
-    <div class="ticker-wrapper">
-        <div class="ticker-content">
-            ✦ GLOBAL ROAST REACTOR ACTIVE ✦ MONITORED BREAKPOINTS: SILICON VALLEY [DELUSIONAL] ✦ TOKYO [CONSOLIDATING] ✦ LONDON [DIVERSIFYING] ✦ SHANGHAI [OVERHEATING] ✦ CURRENT TRANSACTION ID: #RL-2026-928A ✦ MEMORY OVERHEAD: 24.8% ✦ COMPILING AUTOMATED CRITIQUES ✦ GLOBAL ROAST REACTOR ACTIVE ✦
-        </div>
-    </div>
+    {% include 'ticker.html' %}
 
     <!-- Main Container -->
     <div class="max-w-6xl mx-auto px-4 md:px-8 py-8 w-full flex-grow">
@@ -142,9 +144,15 @@
                 <div class="serif-title text-5xl font-bold tracking-tight">RoastLab <span class="text-xs font-sans font-bold uppercase tracking-widest text-[#534c44]">VOL.01 · ISSUE 06.2026</span></div>
                 <p class="text-xs uppercase tracking-widest mt-1 text-[#534c44] font-bold">World Telemetry Audit Dashboard</p>
             </div>
-            <div class="mt-4 md:mt-0 flex gap-4 items-center">
+            <div class="mt-4 md:mt-0 flex flex-wrap gap-4 items-center justify-end">
                 <span class="bg-[#73d41d] brutal-border px-3 py-1 text-xs font-bold tracking-widest uppercase">BRUTALLY HONEST</span>
-                <div id="authStatusText" class="text-xs font-bold text-[#534c44]">CONNECTING SECURE TELEMETRY...</div>
+                <div id="authStatusText" class="text-xs font-bold text-[#534c44]">
+                    {% if session.get('user_id') %}
+                        SECURED ACCOUNT VAULT: {{ session.get('user_email') }} | <a href="/logout" class="underline hover:text-[#73d41d]">LOGOUT</a>
+                    {% else %}
+                        ANONYMOUS STORAGE ACTIVE | <a href="/login" class="underline hover:text-[#73d41d]">LOGIN</a> / <a href="/signup" class="underline hover:text-[#73d41d]">SIGNUP</a>
+                    {% endif %}
+                </div>
             </div>
         </header>
 
@@ -244,6 +252,27 @@
 
             <!-- Right Column: Results Stream -->
             <section class="lg:col-span-5 space-y-6">
+                {% if limit_reached %}
+                <!-- Friendly Daily Limit Warning Card -->
+                <div class="brutal-border brutal-shadow-lg p-6 bg-[#f7f5ec] space-y-4">
+                    <div class="flex justify-between items-center pb-2 border-b border-[#0c0806]">
+                        <span class="text-xs uppercase font-bold text-red-600 flex items-center gap-1">
+                            <i data-lucide="shield-alert" class="w-4 h-4 text-red-600"></i> Rate Limit Exceeded
+                        </span>
+                        <span class="bg-black text-[#73d41d] text-[10px] px-1.5 py-0.5 font-bold uppercase">3 / 3 Daily Limit</span>
+                    </div>
+                    <h3 class="serif-title text-2xl font-black">Hold your horses, founder.</h3>
+                    <p class="text-xs text-[#534c44] leading-relaxed">
+                        You've processed 3 startup ideas today. To protect our free API nodes and prevent server exhaustion, RoastLab limits users to 3 runs per 24 hours. No payment, no paywall — just give the reactor some cool-down time and try again tomorrow.
+                    </p>
+                    {% if not session.get('user_id') %}
+                    <p class="text-[10px] font-bold text-black border-t border-gray-300 pt-2">
+                        💡 Tip: If you have an account, <a href="/login" class="text-[#73d41d] hover:underline">login</a> to use your account rate limits. Or <a href="/signup" class="text-[#73d41d] hover:underline">sign up</a> for free.
+                    </p>
+                    {% endif %}
+                </div>
+                {% endif %}
+
                 <!-- Cinematic Loader (Hidden by default, triggered on submit) -->
                 <div id="loadingOverlay" class="hidden brutal-border brutal-shadow-lg p-8 bg-white space-y-6">
                     <div class="flex justify-between items-center">
@@ -345,8 +374,33 @@
                 </div>
                 <!-- Interactive History Feed -->
                 <div id="historyList" class="space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scroll">
-                    <!-- Loaded dynamically via JS -->
-                    <div class="text-xs font-bold text-center py-8 text-[#534c44]">No saved verdicts yet. Generate some audits to populate history!</div>
+                    {% if session.get('user_id') and history %}
+                        {% for item in history %}
+                        <div class="brutal-border bg-white p-3 space-y-2 relative brutal-shadow transition-transform hover:-translate-y-0.5" id="verdict-card-{{ item.id }}">
+                            <div class="flex justify-between items-start gap-4">
+                                <h4 class="font-bold text-xs leading-snug">{{ item.roast_result.headline }}</h4>
+                                <span class="bg-[#73d41d] font-bold text-[10px] brutal-border px-1.5 py-0.5 leading-none">{{ item.roast_result.score }}/100</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-[10px] font-bold text-[#534c44]">
+                                <span>{{ item.created_at[:10] }}</span>
+                                <div class="flex gap-2">
+                                    <button class="hover:text-red-500 delete-btn text-[10px]" onclick="deleteLocalVerdict(event, {{ item.id }})">Delete</button>
+                                    <span>|</span>
+                                    <button class="hover:text-blue-500 export-btn text-[10px]" onclick="exportLocalVerdict('{{ item.roast_result.headline|replace("'", "\\'")|replace('"', '\\"') }}', {{ item.roast_result.score }}, '{{ item.roast_result.brutal_truth|replace("'", "\\'")|replace('"', '\\"') }}')">PDF</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-xs font-bold text-center py-8 text-[#534c44]">
+                            {% if session.get('user_id') %}
+                                No saved verdicts yet. Press 'Save Verdict' on the results page!
+                            {% else %}
+                                <p class="mb-2">Login or signup to permanently save and track your verdicts.</p>
+                                <a href="/login" class="text-[#73d41d] underline hover:text-black">LOGIN</a> / <a href="/signup" class="text-[#73d41d] underline hover:text-black">SIGNUP</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="border-t border-[#0c0806] pt-4">
@@ -355,32 +409,27 @@
         </div>
     </div>
 
-    <!-- Authentic Lead Sign-up Modal -->
+    <!-- Signup/Login Prompt Modal -->
     <div id="signupModal" class="fixed inset-0 bg-[#0c0806]/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#f7f5ec] max-w-md w-full brutal-border brutal-shadow-lg p-6 space-y-6 relative">
-            <button id="closeModalBtn" class="absolute top-4 right-4 hover:bg-gray-200 p-1 border border-black bg-white">
+            <button id="closeModalBtn" class="absolute top-4 right-4 hover:bg-gray-200 p-1 border border-black bg-white cursor-pointer">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
             <div class="text-center space-y-2">
-                <span class="bg-[#73d41d] text-xs font-bold border border-black px-2.5 py-1 uppercase tracking-wider">SAVE YOUR RESULTS</span>
+                <span class="bg-[#73d41d] text-xs font-bold border border-black px-2.5 py-1 uppercase tracking-wider">SECURE ACCOUNT REQUIRED</span>
                 <h3 class="serif-title text-3xl font-bold">Sync Verdict History</h3>
-                <p class="text-xs text-[#534c44]">Join over 12,000 founders. Save your verdicts in your private database secure locker permanently to track product developments.</p>
+                <p class="text-xs text-[#534c44]">To permanently save and track your verdicts in your private secure locker, initialize an account vault.</p>
             </div>
-            <form id="authForm" class="space-y-4">
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-[10px] uppercase font-bold tracking-widest">Email Address</label>
-                    <input type="email" id="authEmail" class="w-full brutal-border bg-white p-3 font-sans text-sm outline-none" placeholder="e.g. founder@startup.co" required>
-                </div>
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-[10px] uppercase font-bold tracking-widest">Master Password</label>
-                    <input type="password" id="authPassword" class="w-full brutal-border bg-white p-3 font-sans text-sm outline-none" placeholder="Min. 6 alphanumeric" required>
-                </div>
-                <button type="submit" class="w-full brutal-btn py-3 text-xs uppercase tracking-widest font-bold">
-                    Secure Locked Vault Access
-                </button>
-            </form>
+            <div class="space-y-3">
+                <a href="/signup" class="block w-full text-center bg-[#73d41d] text-[#0c0806] font-bold py-3 text-xs uppercase tracking-widest border-2 border-black hover:bg-white transition-colors">
+                    Create Secure Vault Account
+                </a>
+                <a href="/login" class="block w-full text-center bg-[#0c0806] text-white font-bold py-3 text-xs uppercase tracking-widest border-2 border-black hover:bg-gray-800 transition-colors">
+                    Login to Existing Vault
+                </a>
+            </div>
             <div class="text-center">
-                <p class="text-[9px] text-[#534c44] uppercase tracking-widest font-bold">No spam. Your secrets remain strictly your secrets.</p>
+                <p class="text-[9px] text-[#534c44] uppercase tracking-widest font-bold">Your secrets remain strictly your secrets.</p>
             </div>
         </div>
     </div>
@@ -462,99 +511,66 @@
 </section>
 <!-- END: RoastLab Value Proposition Section -->
 
-<div class="native-video-wrapper" style="
-    width: 100%;
-    max-width: 1200px;
-    margin: 40px auto;
-    position: relative;
-    aspect-ratio: 16 / 9;
-    background: #000000;
-    overflow: hidden; /* Clips YouTube title bars and controls out of bounds */
-    box-sizing: border-box;
-"
-onmouseenter="engageNativeVideo(this)" 
-onmouseleave="suspendNativeVideo(this)">
-    
-    <iframe class="native-iframe"
-            src="https://www.youtube.com/embed/P3XeG0-Ojn8?enablejsapi=1&controls=0&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1&autoplay=1&mute=1&loop=1&playlist=P3XeG0-Ojn8&vq=hd1080" 
-            title="Business Plan Explainer Stream"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            referrerpolicy="strict-origin-when-cross-origin"
-            style="
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                transform: scale(1.35);
-                transform-origin: center center;
-            ">
-    </iframe>
-
-    <div class="native-ui-shield" style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(180deg, rgba(12, 8, 6, 0.1) 0%, rgba(12, 8, 6, 0.7) 100%);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 24px;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        box-sizing: border-box;
-        font-family: 'JetBrains Mono', ui-monospace, monospace;
-    ">
-        
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
-            <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff; letter-spacing: 0.05em; text-transform: uppercase;">
-                Hover window to activate audio & stream
-            </div>
-            <div style="font-size: 0.65rem; color: rgba(255, 255, 255, 0.3);">
-             
-            </div>
+<!-- Video Popup Modal -->
+<div id="videoModal" class="fixed inset-0 bg-[#0c0806]/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#f7f5ec] max-w-2xl w-full brutal-border brutal-shadow-lg relative overflow-hidden flex flex-col">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center bg-[#0c0806] text-[#f7f5ec] px-4 py-3 border-b-2 border-black">
+            <span class="text-xs uppercase font-bold tracking-widest">// A Message From The RoastLab Team</span>
+            <button id="closeVideoModalBtn" class="bg-red-600 text-white font-bold px-2 py-0.5 brutal-border hover:bg-red-700 transition-colors cursor-pointer text-xs" style="min-width: 24px; min-height: 24px;">X</button>
+        </div>
+        <!-- Video Iframe Wrapper -->
+        <div class="relative w-full aspect-video bg-black">
+            <iframe id="modalYoutubeIframe" class="w-full h-full"
+                    src=""
+                    title="Business Plan Explainer Stream"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+            </iframe>
         </div>
     </div>
-
 </div>
 
 <script>
-    /**
-     * Unmutes and plays the buffered video on hover interface coordinates.
-     */
-    function engageNativeVideo(container) {
-        const iframe = container.querySelector('.native-iframe');
-        const shield = container.querySelector('.native-ui-shield');
-        
-        if (iframe && iframe.contentWindow) {
-            // Commands target frame to unmute audio and initiate active rendering 
-            iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        }
-        if (shield) {
-            shield.style.opacity = '0';
-        }
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+        const videoModal = document.getElementById("videoModal");
+        const modalIframe = document.getElementById("modalYoutubeIframe");
+        const closeBtn = document.getElementById("closeVideoModalBtn");
 
-    /**
-     * Mutes and pauses the streaming thread immediately upon cursor departure.
-     */
-    function suspendNativeVideo(container) {
-        const iframe = container.querySelector('.native-iframe');
-        const shield = container.querySelector('.native-ui-shield');
-        
-        if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        // Open modal after 2.5s delay if not dismissed this session
+        if (!sessionStorage.getItem("roastlab_video_dismissed")) {
+            setTimeout(() => {
+                videoModal.classList.remove("hidden");
+                // Set the src once the modal opens, ensuring no duplicate/eager video loads
+                modalIframe.src = "https://www.youtube.com/embed/P3XeG0-Ojn8?controls=1&rel=0";
+            }, 2500);
         }
-        if (shield) {
-            shield.style.opacity = '1';
+
+        const closeVideoModal = () => {
+            videoModal.classList.add("hidden");
+            modalIframe.src = ""; // Clear src to stop video playing immediately
+            sessionStorage.setItem("roastlab_video_dismissed", "true");
+        };
+
+        if (closeBtn) {
+            closeBtn.addEventListener("click", closeVideoModal);
         }
-    }
+
+        // Close on clicking outside the modal content container
+        videoModal.addEventListener("click", (e) => {
+            if (e.target === videoModal) {
+                closeVideoModal();
+            }
+        });
+
+        // Close on Esc press
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && !videoModal.classList.contains("hidden")) {
+                closeVideoModal();
+            }
+        });
+    });
 </script>
 
 
@@ -971,29 +987,8 @@ onmouseleave="suspendNativeVideo(this)">
         &copy; 2026 ROASTLAB INC. ALL VERDICTS PERMANENTLY STORED CRYPTOGRAPHICALLY INSIDE CLIENT. A PRODUCT OF KRYONARA
     </div>
 </footer>
-    <!-- Firebase SDK Imports & Operations -->
-    <script type="module">
-        // Import Firebase modules securely
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIe6Dc-Se9UQQrfYD3UO6Kfd7MmgueRFo",
-            authDomain: "roastlab-ai.firebaseapp.com",
-            projectId: "roastlab-ai",
-            storageBucket: "roastlab-ai.firebasestorage.app",
-            messagingSenderId: "929385617626",
-            appId: "1:929385617626:web:7bb99ced42966863952de3",
-            measurementId: "G-9DL76MX1JY"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        const appId = "roastlab-ai";
-        let activeUserId = null;
+    <!-- RoastLab AI Client-Side Scripts -->
+    <script>
         let isSaving = false;
 
         // Automatically trigger authentic loading flows
@@ -1055,189 +1050,117 @@ onmouseleave="suspendNativeVideo(this)">
             });
         }
 
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                // Silently sign-in anonymously to create an active sandbox workspace
-                await signInAnonymously(auth).catch(err => console.error("Anonymous authentication error:", err));
-            } else {
-                activeUserId = user.uid;
-                const statusText = user.isAnonymous ? "SECURE LOCAL STORAGE active" : `SECURED ACCOUNT VAULT: ${user.email}`;
-                document.getElementById('authStatusText').innerText = statusText;
-                
-                // Pull and render saved history
-                await refreshHistory();
-            }
-        });
-
         // Trigger Save Current Verdict
         const saveBtn = document.getElementById('saveVerButton');
         if (saveBtn) {
             saveBtn.addEventListener('click', async () => {
-                if (isSaving || !activeUserId) return;
+                {% if not session.get('user_id') %}
+                // Show prompt to login or signup
+                document.getElementById('signupModal').classList.remove('hidden');
+                return;
+                {% else %}
+                if (isSaving) return;
                 isSaving = true;
                 saveBtn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Saving...`;
                 lucide.createIcons();
 
-                // Build verdict object from current rendered variables
                 const currentVerdict = {
-                    headline: "{{ roast_result.headline if roast_result else '' }}",
-                    score: parseInt("{{ roast_result.score if roast_result else 0 }}") || 0,
-                    roast_bullets: JSON.parse(`{{ roast_result.roast_bullets | tojson | safe if roast_result else "[]" }}`),
-                    brutal_truth: "{{ roast_result.brutal_truth if roast_result else '' }}",
-                    worth_saving: "{{ roast_result.worth_saving if roast_result else '' }}",
-                    eats_lunch: "{{ roast_result.eats_lunch if roast_result else '' }}",
-                    one_move: "{{ roast_result.one_move if roast_result else '' }}",
-                    timestamp: Date.now()
+                    user_input: document.getElementById('user_input').value,
+                    roast_result: {
+                        headline: "{{ roast_result.headline if roast_result else '' }}",
+                        score: parseInt("{{ roast_result.score if roast_result else 0 }}") || 0,
+                        roast_bullets: JSON.parse(`{{ roast_result.roast_bullets | tojson | safe if roast_result else "[]" }}`),
+                        brutal_truth: "{{ roast_result.brutal_truth if roast_result else '' }}",
+                        worth_saving: "{{ roast_result.worth_saving if roast_result else '' }}",
+                        eats_lunch: "{{ roast_result.eats_lunch if roast_result else '' }}",
+                        one_move: "{{ roast_result.one_move if roast_result else '' }}"
+                    }
                 };
 
-                // RULE 1: STRICT PATH FOR SECURITY PERMISSIONS
-                const collectionPath = `artifacts/${appId}/users/${activeUserId}/verdicts`;
                 try {
-                    await addDoc(collection(db, collectionPath), currentVerdict);
-                    saveBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Saved Successfully`;
-                    lucide.createIcons();
-                    await refreshHistory();
-
-                    // Check if they are anonymous, show the Signup Modal after their first success to hook engagement!
-                    if (auth.currentUser && auth.currentUser.isAnonymous) {
+                    const response = await fetch('/save_verdict', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(currentVerdict)
+                    });
+                    const resData = await response.json();
+                    if (resData.success) {
+                        saveBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Saved Successfully`;
+                        lucide.createIcons();
                         setTimeout(() => {
-                            document.getElementById('signupModal').classList.remove('hidden');
-                        }, 1200);
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        saveBtn.innerHTML = `<i data-lucide="x" class="w-3.5 h-3.5"></i> Save Error`;
+                        lucide.createIcons();
                     }
                 } catch (e) {
-                    console.error("Firestore Save Error: ", e);
+                    console.error("Save Error: ", e);
                     saveBtn.innerHTML = `<i data-lucide="x" class="w-3.5 h-3.5"></i> Save Error`;
                     lucide.createIcons();
                 }
+
                 setTimeout(() => {
                     saveBtn.innerHTML = `<i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save Verdict`;
                     lucide.createIcons();
                     isSaving = false;
                 }, 4000);
+                {% endif %}
             });
         }
 
-        async function refreshHistory() {
-            if (!activeUserId) return;
-            const collectionPath = `artifacts/${appId}/users/${activeUserId}/verdicts`;
-            
+        // Delete verdict helper function
+        async function deleteLocalVerdict(event, verdictId) {
+            event.preventDefault();
+            if (!confirm("Are you sure you want to permanently delete this audit verdict?")) return;
+
             try {
-                // Fetch basic logs (RULE 2: Fetch raw and sort locally inside memory)
-                const snapshot = await getDocs(collection(db, collectionPath));
-                const list = [];
-                snapshot.forEach(docSnap => {
-                    list.push({ id: docSnap.id, ...docSnap.data() });
+                const response = await fetch(`/delete_verdict/${verdictId}`, {
+                    method: 'POST'
                 });
-
-                // Sort newest first
-                list.sort((a, b) => b.timestamp - a.timestamp);
-
-                const container = document.getElementById('historyList');
-                if (!container) return;
-                
-                container.innerHTML = "";
-
-                if (list.length === 0) {
-                    container.innerHTML = `<div class="text-xs font-bold text-center py-8 text-[#534c44]">No saved verdicts yet. Press 'Save Verdict' on the results page!</div>`;
-                    return;
+                const data = await response.json();
+                if (data.success) {
+                    const el = document.getElementById(`verdict-card-${verdictId}`);
+                    if (el) el.remove();
+                } else {
+                    alert("Delete failed.");
                 }
-
-                list.forEach((item) => {
-                    const row = document.createElement('div');
-                    row.className = "brutal-border bg-white p-3 space-y-2 relative brutal-shadow transition-transform hover:-translate-y-0.5";
-                    row.innerHTML = `
-                        <div class="flex justify-between items-start gap-4">
-                            <h4 class="font-bold text-xs leading-snug">${item.headline || 'Verdict Teardown'}</h4>
-                            <span class="bg-[#73d41d] font-bold text-[10px] brutal-border px-1.5 py-0.5 leading-none">${item.score}/100</span>
-                        </div>
-                        <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-[10px] font-bold text-[#534c44]">
-                            <span>${new Date(item.timestamp).toLocaleDateString()}</span>
-                            <div class="flex gap-2">
-                                <button class="hover:text-red-500 delete-btn" data-id="${item.id}">Delete</button>
-                                <span>|</span>
-                                <button class="hover:text-blue-500 export-btn" data-headline="${item.headline || 'Verdict'}" data-score="${item.score}" data-truth="${item.brutal_truth || ''}">PDF</button>
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(row);
-                });
-
-                // Attach event actions
-                document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', async (e) => {
-                        const id = e.target.getAttribute('data-id');
-                        const docRef = doc(db, `artifacts/${appId}/users/${activeUserId}/verdicts`, id);
-                        await deleteDoc(docRef);
-                        await refreshHistory();
-                    });
-                });
-
-                document.querySelectorAll('.export-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const headline = e.target.getAttribute('data-headline');
-                        const score = e.target.getAttribute('data-score');
-                        const truth = e.target.getAttribute('data-truth');
-                        
-                        // Render simple temporary printable page format cleanly
-                        const opt = window.open('', '_blank');
-                        opt.document.write(`
-                            <html>
-                            <head>
-                                <title>RoastLab AI - export verdict</title>
-                                <style>
-                                    body { font-family: monospace; background: #f7f5ec; color: #0c0806; padding: 40px; }
-                                    .wrapper { border: 2px solid #0c0806; padding: 30px; background: #fff; max-width: 600px; margin: auto; }
-                                    h1 { border-bottom: 2px solid #0c0806; padding-bottom: 10px; }
-                                    .score { font-size: 24px; font-weight: bold; background: #73d41d; display: inline-block; padding: 5px 10px; margin: 15px 0; border: 2px solid #0c0806; }
-                                    p { line-height: 1.6; }
-                                </style>
-                            </head>
-                            <body>
-                                <div class="wrapper">
-                                    <h1>RoastLab: ${headline}</h1>
-                                    <div class="score">BRUTALITY SCORE: ${score}/100</div>
-                                    <h3>BRUTAL TRUTH PROTOCOL</h3>
-                                    <p>${truth}</p>
-                                </div>
-                            </body>
-                            </html>
-                        `);
-                        opt.document.close();
-                        opt.print();
-                    });
-                });
-
             } catch (err) {
-                console.error("History fetch error:", err);
+                console.error(err);
+                alert("Connection failed.");
             }
         }
 
-        // SignUp & Account linkage Form integration
-        document.getElementById('authForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-
-            try {
-                // Link current anonymous authentication to a secure email/password setup
-                await createUserWithEmailAndPassword(auth, email, password);
-                document.getElementById('signupModal').classList.add('hidden');
-                document.getElementById('authStatusText').innerText = `SECURED ACCOUNT VAULT: ${email}`;
-            } catch (err) {
-                // If account exists, fall back to simple sign in
-                if (err.code === 'auth/email-already-in-use') {
-                    await signInWithEmailAndPassword(auth, email, password)
-                        .then(() => {
-                            document.getElementById('signupModal').classList.add('hidden');
-                        })
-                        .catch(loginErr => {
-                            alert("Authentication failure: " + loginErr.message);
-                        });
-                } else {
-                    alert("Failure securing details: " + err.message);
-                }
-            }
-        });
+        // PDF / Printing export helper function
+        function exportLocalVerdict(headline, score, truth) {
+            const opt = window.open('', '_blank');
+            opt.document.write(`
+                <html>
+                <head>
+                    <title>RoastLab AI - export verdict</title>
+                    <style>
+                        body { font-family: monospace; background: #f7f5ec; color: #0c0806; padding: 40px; }
+                        .wrapper { border: 2px solid #0c0806; padding: 30px; background: #fff; max-width: 600px; margin: auto; box-shadow: 8px 8px 0px 0px #0c0806; }
+                        h1 { border-bottom: 2px solid #0c0806; padding-bottom: 10px; }
+                        .score { font-size: 24px; font-weight: bold; background: #73d41d; display: inline-block; padding: 5px 10px; margin: 15px 0; border: 2px solid #0c0806; }
+                        p { line-height: 1.6; }
+                    </style>
+                </head>
+                <body>
+                    <div class="wrapper">
+                        <h1>RoastLab: ${headline}</h1>
+                        <div class="score">BRUTALITY SCORE: ${score}/100</div>
+                        <h3>BRUTAL TRUTH PROTOCOL</h3>
+                        <p>${truth}</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            opt.document.close();
+            opt.print();
+        }
 
         // Toggle Drawer Elements
         const drawer = document.getElementById('drawerOverlay');
