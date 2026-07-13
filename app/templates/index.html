@@ -351,12 +351,28 @@
                                         <!-- Messages get appended dynamically -->
                                     </div>
                                     <div id="chatLoader" class="hidden text-[10px] text-gray-500 font-bold animate-pulse">// AI is composing advice...</div>
-                                    <!-- Dynamic chat input panel -->
-                                    <div class="flex brutal-border bg-white focus-within:border-[#73d41d] transition-all rounded-sm overflow-hidden">
-                                        <input type="text" id="chatInputText" placeholder="Enter your mind and send..." class="bg-transparent px-3 py-2 text-xs text-black outline-none w-full font-mono">
-                                        <button id="sendChatBtn" class="bg-[#0c0806] text-[#73d41d] px-4 font-black text-xs hover:bg-[#73d41d] hover:text-[#0c0806] transition-colors flex items-center justify-center cursor-pointer" title="Send message to AI">
-                                            <i data-lucide="corner-right-up" class="w-4 h-4"></i>
-                                        </button>
+                                    <!-- Dynamic chat input panel optimized for Android -->
+                                    <div class="space-y-2">
+                                        <!-- Attached File Indicator -->
+                                        <div id="fileAttachmentBadge" class="hidden flex items-center justify-between bg-[#73d41d] text-[#0c0806] px-3 py-1.5 brutal-border text-[10px] font-bold uppercase tracking-wider">
+                                            <span id="fileAttachmentName">📄 file.txt</span>
+                                            <button type="button" id="removeFileBtn" class="hover:text-red-800 font-bold px-2 py-0.5 cursor-pointer">X</button>
+                                        </div>
+
+                                        <div class="flex brutal-border bg-white focus-within:border-[#73d41d] transition-all rounded-sm overflow-hidden">
+                                            <!-- Paperclip File Button -->
+                                            <input type="file" id="chatFileInput" class="hidden">
+                                            <button type="button" id="attachFileBtn" class="bg-gray-100 text-[#0c0806] border-r-2 border-[#0c0806] px-4 hover:bg-gray-200 transition-colors flex items-center justify-center cursor-pointer" style="min-width: 44px; min-height: 44px;" title="Attach Startup Project / Pitch Document">
+                                                <i data-lucide="paperclip" class="w-4 h-4"></i>
+                                            </button>
+
+                                            <input type="text" id="chatInputText" placeholder="Enter your mind and send..." class="bg-transparent px-3 py-2.5 text-xs text-black outline-none w-full font-mono" style="min-height: 44px;">
+
+                                            <!-- Send Button with bend-upward-arrow icon -->
+                                            <button id="sendChatBtn" class="bg-[#0c0806] text-[#73d41d] px-5 font-black text-xs hover:bg-[#73d41d] hover:text-[#0c0806] transition-colors flex items-center justify-center cursor-pointer" style="min-width: 44px; min-height: 44px;" title="Send message to AI">
+                                                <i data-lucide="corner-right-up" class="w-4.5 h-4.5"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1115,13 +1131,13 @@
                 const currentVerdict = {
                     user_input: document.getElementById('user_input').value,
                     roast_result: {
-                        headline: "{{ roast_result.headline if roast_result else '' }}",
-                        score: parseInt("{{ roast_result.score if roast_result else 0 }}") || 0,
-                        roast_bullets: JSON.parse(`{{ roast_result.roast_bullets | tojson | safe if roast_result else "[]" }}`),
-                        brutal_truth: "{{ roast_result.brutal_truth if roast_result else '' }}",
-                        worth_saving: "{{ roast_result.worth_saving if roast_result else '' }}",
-                        eats_lunch: "{{ roast_result.eats_lunch if roast_result else '' }}",
-                        one_move: "{{ roast_result.one_move if roast_result else '' }}"
+                        headline: {{ (roast_result.headline if roast_result else '') | tojson | safe }},
+                        score: parseInt({{ (roast_result.score if roast_result else 0) | tojson | safe }}) || 0,
+                        roast_bullets: {{ (roast_result.roast_bullets if roast_result else []) | tojson | safe }},
+                        brutal_truth: {{ (roast_result.brutal_truth if roast_result else '') | tojson | safe }},
+                        worth_saving: {{ (roast_result.worth_saving if roast_result else '') | tojson | safe }},
+                        eats_lunch: {{ (roast_result.eats_lunch if roast_result else '') | tojson | safe }},
+                        one_move: {{ (roast_result.one_move if roast_result else '') | tojson | safe }}
                     }
                 };
 
@@ -1174,7 +1190,50 @@
         const chatInputText = document.getElementById("chatInputText");
         const sendChatBtn = document.getElementById("sendChatBtn");
 
+        // File Attachment controls
+        const attachFileBtn = document.getElementById("attachFileBtn");
+        const chatFileInput = document.getElementById("chatFileInput");
+        const fileAttachmentBadge = document.getElementById("fileAttachmentBadge");
+        const fileAttachmentName = document.getElementById("fileAttachmentName");
+        const removeFileBtn = document.getElementById("removeFileBtn");
+
         let chatHistory = [];
+        let attachedFileName = "";
+        let attachedFileContent = "";
+
+        // Trigger file input dialog
+        if (attachFileBtn) {
+            attachFileBtn.addEventListener("click", () => {
+                chatFileInput.click();
+            });
+        }
+
+        // Handle file loading client-side
+        if (chatFileInput) {
+            chatFileInput.addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                attachedFileName = file.name;
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    attachedFileContent = evt.target.result;
+                    fileAttachmentName.innerText = `📄 ${attachedFileName} (${file.size} bytes)`;
+                    fileAttachmentBadge.classList.remove("hidden");
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        // Remove file attachment
+        if (removeFileBtn) {
+            removeFileBtn.addEventListener("click", () => {
+                chatFileInput.value = "";
+                attachedFileName = "";
+                attachedFileContent = "";
+                fileAttachmentBadge.classList.add("hidden");
+            });
+        }
 
         if (tellMeMoreBtn) {
             tellMeMoreBtn.addEventListener("click", () => {
@@ -1189,33 +1248,97 @@
         if (closeTellMeMoreModalBtn) closeTellMeMoreModalBtn.addEventListener("click", closeTellMeMoreModal);
         if (cancelTellMeMoreBtn) cancelTellMeMoreBtn.addEventListener("click", closeTellMeMoreModal);
 
-        const appendChatMessage = (role, content) => {
+        // Helper to compile and trigger localized PDF roadmap generation
+        window.exportChatBubbleToPDF = function(elementId) {
+            const content = document.getElementById(elementId).innerText;
+            const opt = window.open('', '_blank');
+            opt.document.write(`
+                <html>
+                <head>
+                    <title>RoastLab AI - export roadmap pdf</title>
+                    <style>
+                        body { font-family: monospace; background: #f7f5ec; color: #0c0806; padding: 40px; }
+                        .wrapper { border: 2px solid #0c0806; padding: 30px; background: #fff; max-width: 600px; margin: auto; box-shadow: 8px 8px 0px 0px #0c0806; }
+                        h1 { border-bottom: 2px solid #0c0806; padding-bottom: 10px; font-size: 20px; }
+                        p { line-height: 1.6; font-size: 12px; white-space: pre-wrap; }
+                    </style>
+                </head>
+                <body>
+                    <div class="wrapper">
+                        <h1>RoastLab AI: Generated Strategic Roadmap</h1>
+                        <p>${content.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            opt.document.close();
+            opt.print();
+        };
+
+        let messageIndex = 0;
+        const appendChatMessage = (role, content, fileNameBadge = "") => {
             const msgDiv = document.createElement("div");
             msgDiv.className = "p-2 border-l-2 " + (role === "user" ? "border-black bg-gray-100" : "border-[#73d41d] bg-[#f7f5ec]");
+
+            messageIndex++;
+            const bubbleContentId = `chat-bubble-content-${messageIndex}`;
+
+            let badgeHtml = fileNameBadge ? `<div class="bg-[#73d41d] text-[#0c0806] text-[8px] font-bold px-1 py-0.5 inline-block border border-black mb-1">${fileNameBadge}</div>` : "";
+
+            let downloadPdfBtn = "";
+            if (role === "assistant") {
+                downloadPdfBtn = `
+                    <div class="mt-2 pt-2 border-t border-gray-200 flex justify-end">
+                        <button onclick="exportChatBubbleToPDF('${bubbleContentId}')" class="text-[9px] font-bold uppercase tracking-wider bg-black text-[#73d41d] px-2 py-1 border border-black hover:bg-[#73d41d] hover:text-black transition-colors cursor-pointer flex items-center gap-1">
+                            <i data-lucide="download" class="w-2.5 h-2.5"></i> Download PDF Roadmap
+                        </button>
+                    </div>
+                `;
+            }
+
             msgDiv.innerHTML = `
                 <div class="font-bold uppercase text-[9px] mb-1 tracking-wider ${role === 'user' ? 'text-black' : 'text-[#73d41d]'}">
                     // ${role === 'user' ? 'User Idea Developer' : 'AI Strategic Critic'}
                 </div>
-                <div class="leading-relaxed whitespace-pre-wrap">${content}</div>
+                ${badgeHtml}
+                <div id="${bubbleContentId}" class="leading-relaxed whitespace-pre-wrap">${content}</div>
+                ${downloadPdfBtn}
             `;
             roastlabChatBox.appendChild(msgDiv);
+            if (window.lucide) lucide.createIcons();
             roastlabChatBox.scrollTop = roastlabChatBox.scrollHeight;
         };
 
         const sendChatMessageToServer = async (message) => {
             chatLoader.classList.remove("hidden");
-            appendChatMessage("user", message);
+
+            let promptToSend = message;
+            let displayBadge = "";
+
+            // Incorporate file attachment dynamically if present
+            if (attachedFileName && attachedFileContent) {
+                promptToSend = `[User Uploaded Project File Reference: ${attachedFileName}]\n"""\n${attachedFileContent}\n"""\n\n${message}`;
+                displayBadge = `File Attached: ${attachedFileName}`;
+
+                // Reset file attachment after load
+                chatFileInput.value = "";
+                attachedFileName = "";
+                attachedFileContent = "";
+                fileAttachmentBadge.classList.add("hidden");
+            }
+
+            appendChatMessage("user", message, displayBadge);
 
             const payload = {
                 user_input: "{{ user_input }}",
-                new_message: message,
+                new_message: promptToSend,
                 history: chatHistory,
                 personality: "{{ selected_personality }}",
                 intensity: "{{ selected_intensity }}"
             };
 
             // Push to local session history
-            chatHistory.push({ role: "user", content: message });
+            chatHistory.push({ role: "user", content: promptToSend });
 
             try {
                 const response = await fetch("/chat", {

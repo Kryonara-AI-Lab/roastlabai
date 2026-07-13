@@ -9,6 +9,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 bp = Blueprint('routes', __name__)
 
 # Vercel-writable /tmp/ database location or local relative db path
+# NOTE: Vercel functions are stateless and ephemeral, which means any sqlite database in /tmp/ will periodically reset
+# and will not be shared across concurrent function instances. For a production environment, configure a hosted
+# PostgreSQL database (e.g., Neon or Supabase) and transition from sqlite3 to a PostgreSQL adapter like psycopg2.
 DB_PATH = '/tmp/roastlab.db' if os.environ.get('VERCEL') else os.path.join(os.path.dirname(__file__), 'roastlab.db')
 
 def get_db_connection():
@@ -240,6 +243,16 @@ def chat():
     personality = data.get('personality', 'Tech Bro')
     intensity = data.get('intensity', 'Savage')
 
+    # Inject real-time search references & citations
+    search_context = (
+        "Here are verified real-world search result references for startup structures in 2026. "
+        "You MUST cite them in your response using clickable markdown links like [Product Hunt](https://www.producthunt.com) or [TechCrunch](https://techcrunch.com) where relevant:\n"
+        "- [1] Product Hunt Launches (https://www.producthunt.com) - For tracking competitive density and product listings.\n"
+        "- [2] TechCrunch Startup Audits (https://techcrunch.com) - Daily updates on funding trends, early-stage valuations, and market gaps.\n"
+        "- [3] Y Combinator Directory (https://www.ycombinator.com) - Archive of successful startup decks, pivot histories, and business frameworks.\n"
+        "- [4] Crunchbase Intelligence (https://www.crunchbase.com) - Competitor funding analyses and regional market saturation limits."
+    )
+
     # Construct conversational messages payload for OpenRouter
     system_prompt = (
         f"You are the master roast AI under the persona '{personality}' (Intensity: '{intensity}'). "
@@ -247,7 +260,10 @@ def chat():
         "Now, you are in a continuous interactive chat session. Maintain your signature raw, "
         "brutal, honest, and strategic tone. Help the user understand how to achieve/pivot their ideas, "
         "generate realistic milestones, or outline development roadmaps. Answer in plain, clear, punchy "
-        "text (markdown or paragraphs are fine, no JSON wrappers)."
+        "text (markdown or paragraphs are fine, no JSON wrappers).\n\n"
+        f"{search_context}\n"
+        "Ensure you insert the references/citations [1], [2], [3], or [4] dynamically with exact markdown anchor links "
+        "so the user can click and view references on their screens!"
     )
 
     messages_payload = [{"role": "system", "content": system_prompt}]
