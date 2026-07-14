@@ -4,4 +4,3 @@ __pycache__/
 .env
 *.db
 *.db-journal
-/home/jules/verification/

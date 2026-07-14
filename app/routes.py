@@ -80,25 +80,25 @@ def index():
         selected_personality = request.form.get('personality', 'Tech Bro')
 
         if user_input.strip():
-            # Enforce 3-roast daily cap
+            # Enforce 6-roast rate cap within a 40-minute sliding window (renews after 40min of rest)
             conn = get_db_connection()
             cursor = conn.cursor()
 
             if session.get('user_id'):
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE user_id = ? AND date(created_at) = date('now')
+                    WHERE user_id = ? AND created_at >= datetime('now', '-40 minutes')
                 ''', (session.get('user_id'),))
             else:
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE ip_address = ? AND user_id IS NULL AND date(created_at) = date('now')
+                    WHERE ip_address = ? AND user_id IS NULL AND created_at >= datetime('now', '-40 minutes')
                 ''', (ip,))
 
-            today_count = cursor.fetchone()[0]
+            recent_count = cursor.fetchone()[0]
             conn.close()
 
-            if today_count >= 3:
+            if recent_count >= 6:
                 limit_reached = True
             else:
                 system_prompt = (
