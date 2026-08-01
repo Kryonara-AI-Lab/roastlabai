@@ -12,9 +12,17 @@ bp = Blueprint('routes', __name__)
 DB_PATH = '/tmp/roastlab.db' if os.environ.get('VERCEL') else os.path.join(os.path.dirname(__file__), 'roastlab.db')
 
 def get_db_connection():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+    # Performance Optimization: Cache and reuse database connection during the same request context
+    if 'db' not in g:
+        g.db = sqlite3.connect(DB_PATH)
+        g.db.row_factory = sqlite3.Row
+    return g.db
+
+@bp.teardown_app_request
+def close_db_connection(exception=None):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
@@ -36,6 +44,15 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users (id)
         )
+    ''')
+    # Performance Optimization: Composite indexes to accelerate rate limiting & history queries from O(N) to O(log N)
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_roasts_user_created
+        ON roasts(user_id, created_at DESC)
+    ''')
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_roasts_ip_user_created
+        ON roasts(ip_address, user_id, created_at DESC)
     ''')
     conn.commit()
     conn.close()
@@ -93,7 +110,6 @@ def index():
                 ''', (ip,))
 
             today_count = cursor.fetchone()[0]
-            conn.close()
 
             if today_count >= 3:
                 limit_reached = True
@@ -149,7 +165,6 @@ def index():
                                 VALUES (?, ?, ?, ?)
                             ''', (session.get('user_id'), ip, user_input, json.dumps(roast_result)))
                             conn.commit()
-                            conn.close()
                         else:
                             roast_result = {
                                 "headline": "Server Exhaustion Fault",
@@ -196,7 +211,6 @@ def index():
                         VALUES (?, ?, ?, ?)
                     ''', (session.get('user_id'), ip, user_input, json.dumps(roast_result)))
                     conn.commit()
-                    conn.close()
 
     # Load history for logged-in users from SQLite
     history = []
@@ -216,7 +230,6 @@ def index():
                 'roast_result': json.loads(r['roast_result']),
                 'created_at': r['created_at']
             })
-        conn.close()
 
     return render_template(
         'index.html', 
@@ -262,13 +275,9 @@ def signup():
                 user = cursor.fetchone()
                 session['user_id'] = user['id']
                 session['user_email'] = user['email']
-                conn.close()
                 return redirect(url_for('routes.index'))
             except sqlite3.IntegrityError:
                 error = "Account under this email already exists."
-            finally:
-                if conn:
-                    conn.close()
 
     return render_template('signup.html', error=error)
 
@@ -289,7 +298,6 @@ def login():
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
             user = cursor.fetchone()
-            conn.close()
 
             if user and check_password_hash(user['password'], password):
                 session['user_id'] = user['id']
@@ -331,7 +339,6 @@ def save_verdict():
         VALUES (?, ?, ?, ?)
     ''', (session.get('user_id'), ip, user_input, json.dumps(roast_result)))
     conn.commit()
-    conn.close()
 
     return jsonify({'success': True})
 
@@ -344,7 +351,6 @@ def delete_verdict(verdict_id):
     cursor = conn.cursor()
     cursor.execute('DELETE FROM roasts WHERE id = ? AND user_id = ?', (verdict_id, session.get('user_id')))
     conn.commit()
-    conn.close()
 
     return jsonify({'success': True})
 
