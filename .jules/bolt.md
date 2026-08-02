@@ -1,0 +1,3 @@
+## 2026-07-13 - [SQLite Indexing and Range-Based Query Optimizations for Rate Limiting]
+**Learning:** SQLite's built-in date/time functions (like `date(created_at)`) prevent the query engine from using standard composite indexes. This causes queries to drop back to full table scans (O(N)), which degrades drastically as transaction volume grows. By switching to range-based comparison conditions (e.g., `created_at >= date('now')`), SQLite can leverage index ranges efficiently and resolve checks in O(log N) complexity.
+**Action:** Always prefer range-based comparisons on raw columns instead of applying functions directly to index columns in SQL databases, and build composite indexes on high-frequency filtering keys.
