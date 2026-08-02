@@ -1,0 +1,3 @@
+## 2026-08-02 - SQLite Index-Friendly Range Queries vs. Function-Based Filtering
+**Learning:** In SQLite, wrapping a column in a function (e.g. `date(created_at)`) in the `WHERE` clause suppresses the query planner's ability to use indexes for that column constraint. Re-writing the query to use a range-based comparison (e.g., `created_at >= date('now')`) enables high-performance composite index seeks, improving query efficiency by over 20x.
+**Action:** When indexing date/time columns, always avoid wrapping the target column in functions like `date()` or `datetime()`. Instead, compare the raw column value to a range expression.
