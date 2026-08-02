@@ -1068,13 +1068,13 @@
                 const currentVerdict = {
                     user_input: document.getElementById('user_input').value,
                     roast_result: {
-                        headline: "{{ roast_result.headline if roast_result else '' }}",
+                        headline: {{ (roast_result.headline if roast_result else '') | tojson | safe }},
                         score: parseInt("{{ roast_result.score if roast_result else 0 }}") || 0,
-                        roast_bullets: JSON.parse(`{{ roast_result.roast_bullets | tojson | safe if roast_result else "[]" }}`),
-                        brutal_truth: "{{ roast_result.brutal_truth if roast_result else '' }}",
-                        worth_saving: "{{ roast_result.worth_saving if roast_result else '' }}",
-                        eats_lunch: "{{ roast_result.eats_lunch if roast_result else '' }}",
-                        one_move: "{{ roast_result.one_move if roast_result else '' }}"
+                        roast_bullets: {{ (roast_result.roast_bullets if roast_result else []) | tojson | safe }},
+                        brutal_truth: {{ (roast_result.brutal_truth if roast_result else '') | tojson | safe }},
+                        worth_saving: {{ (roast_result.worth_saving if roast_result else '') | tojson | safe }},
+                        eats_lunch: {{ (roast_result.eats_lunch if roast_result else '') | tojson | safe }},
+                        one_move: {{ (roast_result.one_move if roast_result else '') | tojson | safe }}
                     }
                 };
 
