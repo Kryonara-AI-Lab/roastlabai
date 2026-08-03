@@ -1,0 +1,4 @@
+## 2025-06-03 - Secure Dynamic Session Management & Global Security Headers
+**Vulnerability:** Hardcoded session `SECRET_KEY` in configuration mapping, which was susceptible to session forgery attacks if deployed without modification. Additionally, there was a lack of default security response headers exposing the app to clickjacking and MIME-sniffing risks.
+**Learning:** Flask relies heavily on a cryptographically secure `SECRET_KEY` for session cookie integrity. When the key is static and hardcoded in the codebase, any attacker knowing or finding the key in the source control can sign arbitary session cookies.
+**Prevention:** Always dynamically configure the `SECRET_KEY` by reading from the environment (`os.environ.get('SECRET_KEY')`), with a secure random fallback (`secrets.token_hex(32)`) generated per-process start if no environment variable is provided. Enforce defense-in-depth headers globally via an `@bp.after_request` hook.
