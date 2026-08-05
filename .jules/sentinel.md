@@ -1,0 +1,4 @@
+## 2026-06-20 - Hardcoded Flask Session Key and Missing Security Headers
+**Vulnerability:** The Flask application used a static, hardcoded `SECRET_KEY` ('roastlab_secret_key_change_this_immediately') for signing session cookies and did not send standard HTTP security headers (like `X-Frame-Options`, `X-Content-Type-Options`, and `Referrer-Policy`), exposing users to session forgery and clickjacking.
+**Learning:** Hardcoded keys are easily extracted if the codebase is exposed or shared. Fallbacks should always generate a high-entropy cryptographically secure key at runtime. Additionally, global security headers should be enforced via an `after_request` interceptor to prevent rendering of the app in malicious frames (clickjacking).
+**Prevention:** Always use dynamic environment variable lookups for secrets with fallback methods like `secrets.token_hex(32)`. Implement security headers globally in Flask using `@blueprint.after_request` or similar decorators.
