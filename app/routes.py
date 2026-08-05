@@ -393,3 +393,11 @@ def protocol():
 @bp.route('/engin_log.html')
 def logs():
     return render_template('engin_log.html')
+
+@bp.after_request
+def add_security_headers(response):
+    # Enforce secure headers globally to protect against clickjacking, MIME-type sniffing, and data leaks.
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Referrer-Policy'] = 'no-referrer-when-downgrade'
+    return response
