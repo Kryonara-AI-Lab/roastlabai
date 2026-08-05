@@ -1,0 +1,3 @@
+## 2026-08-05 - Optimize Daily Cap Rate-Limiting via Range Queries and Composite Indexes
+**Learning:** Evaluating sqlite functions like `date(created_at)` on every row in the WHERE clause prevents SQLite from using a standard B-tree index on `created_at`. Rewriting the query to a range-based condition (e.g. `created_at >= date('now')`) enables index range scans, which when combined with composite indexes on `(user_id, created_at)` and `(ip_address, user_id, created_at)`, drops query complexity from O(N) full-table scan to O(log N) index search.
+**Action:** Always prefer sargable range-based queries (e.g., `created_at >= date('now')`) over function transformations of indexed columns like `date(created_at) = ...`, and accompany them with matching composite indexes.
