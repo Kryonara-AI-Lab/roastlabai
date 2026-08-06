@@ -1,3 +1,5 @@
+import os
+import secrets
 from flask import Flask
 from dotenv import load_dotenv
 
@@ -7,8 +9,9 @@ def create_app():
     
     app = Flask(__name__)
     
+    # Secure dynamic secret key lookup with safe fallback
     app.config.from_mapping(
-        SECRET_KEY='roastlab_secret_key_change_this_immediately',
+        SECRET_KEY=os.environ.get('FLASK_SECRET_KEY') or secrets.token_hex(32),
     )
 
     from . import routes
