@@ -1,0 +1,3 @@
+## 2026-08-07 - SQLite Index Performance Bottleneck on Function Calls
+**Learning:** In SQLite, applying scalar function calls (such as `date(created_at)`) on columns prevents the query planner from using indexes on those columns, forcing a full table scan. Rewriting the expression to index-friendly, range-based conditions (like `created_at >= date('now')`) enables SQLite to utilize composite indexes such as `(user_id, created_at)` or `(ip_address, user_id, created_at)` with `SEARCH TABLE ... USING COVERING INDEX` query plans.
+**Action:** Use range-based filters instead of applying functions directly to columns in WHERE clauses, and define corresponding composite indexes covering the queried fields.
