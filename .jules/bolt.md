@@ -1,0 +1,3 @@
+## 2026-08-07 - SQLite Non-Sargable Function Call Rate Limiting
+**Learning:** Using scalar functions on database columns (e.g., `date(created_at) = date('now')`) creates a non-sargable query pattern, forcing SQLite to perform sequential scans on the entire dataset even if indexes exist. Changing this pattern to a range-based comparison (e.g., `created_at >= date('now')`) allows the database engine to perform efficient B-Tree index range seeks.
+**Action:** Always avoid function evaluations on indexed columns in `WHERE` clauses. Instead, formulate conditions using bare columns and range-based operators to leverage index-friendly range scanning.
