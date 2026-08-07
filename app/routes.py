@@ -37,6 +37,17 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users (id)
         )
     ''')
+    # Bolt Optimization: Composite indexes on frequently filtered/ordered fields.
+    # idx_roasts_user_created assists history queries and user-specific rate limits.
+    # idx_roasts_ip_user_created optimizes IP-specific rate limits for anonymous users.
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_roasts_user_created
+        ON roasts (user_id, created_at)
+    ''')
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_roasts_ip_user_created
+        ON roasts (ip_address, user_id, created_at)
+    ''')
     conn.commit()
     conn.close()
 
@@ -82,14 +93,20 @@ def index():
             cursor = conn.cursor()
 
             if session.get('user_id'):
+                # Bolt Optimization: Avoid un-indexable date() function calls.
+                # 'created_at >= date('now')' uses index-friendly range scanning
+                # on composite index idx_roasts_user_created.
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE user_id = ? AND date(created_at) = date('now')
+                    WHERE user_id = ? AND created_at >= date('now')
                 ''', (session.get('user_id'),))
             else:
+                # Bolt Optimization: Avoid un-indexable date() function calls.
+                # 'created_at >= date('now')' uses index-friendly range scanning
+                # on composite index idx_roasts_ip_user_created.
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE ip_address = ? AND user_id IS NULL AND date(created_at) = date('now')
+                    WHERE ip_address = ? AND user_id IS NULL AND created_at >= date('now')
                 ''', (ip,))
 
             today_count = cursor.fetchone()[0]
