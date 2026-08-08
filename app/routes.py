@@ -348,6 +348,17 @@ def delete_verdict(verdict_id):
 
     return jsonify({'success': True})
 
+@bp.after_request
+def add_security_headers(response):
+    """
+    Globally enforces standard security headers to secure user sessions and
+    prevent cross-site or frame injection attacks.
+    """
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    return response
+
 # --- Quiet Favicon Errors ---
 @bp.route('/favicon.ico')
 def favicon():

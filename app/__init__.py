@@ -7,8 +7,10 @@ def create_app():
     
     app = Flask(__name__)
     
+    import os
+    import secrets
     app.config.from_mapping(
-        SECRET_KEY='roastlab_secret_key_change_this_immediately',
+        SECRET_KEY=os.environ.get('SECRET_KEY') or secrets.token_hex(32),
     )
 
     from . import routes
