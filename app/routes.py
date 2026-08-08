@@ -37,6 +37,17 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users (id)
         )
     ''')
+    # Bolt Optimization: Create composite indexes to turn O(N) full table scans into O(log N) indexed searches.
+    # idx_roasts_user_created: speeds up history retrieval & rate limit checks for logged-in users.
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_roasts_user_created
+        ON roasts (user_id, created_at)
+    ''')
+    # idx_roasts_ip_user_created: speeds up rate limit checks for anonymous users by IP.
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_roasts_ip_user_created
+        ON roasts (ip_address, user_id, created_at)
+    ''')
     conn.commit()
     conn.close()
 
@@ -81,15 +92,18 @@ def index():
             conn = get_db_connection()
             cursor = conn.cursor()
 
+            # Bolt Optimization: Avoid un-indexable date() function calls on column values.
+            # Using 'created_at >= date("now")' allows SQLite to perform an extremely fast index search
+            # utilizing the idx_roasts_user_created or idx_roasts_ip_user_created indexes.
             if session.get('user_id'):
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE user_id = ? AND date(created_at) = date('now')
+                    WHERE user_id = ? AND created_at >= date('now')
                 ''', (session.get('user_id'),))
             else:
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE ip_address = ? AND user_id IS NULL AND date(created_at) = date('now')
+                    WHERE ip_address = ? AND user_id IS NULL AND created_at >= date('now')
                 ''', (ip,))
 
             today_count = cursor.fetchone()[0]
