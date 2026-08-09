@@ -7,8 +7,16 @@ def create_app():
     
     app = Flask(__name__)
     
+    import os
+    import secrets
+
+    # Dynamic fallback generation of secret keys for security
+    secret_key = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
+
     app.config.from_mapping(
-        SECRET_KEY='roastlab_secret_key_change_this_immediately',
+        SECRET_KEY=secret_key,
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE='Lax',
     )
 
     from . import routes
