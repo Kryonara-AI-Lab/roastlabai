@@ -43,6 +43,14 @@ def init_db():
 # Initialize database
 init_db()
 
+@bp.after_request
+def apply_security_headers(response):
+    # Enforce response security headers globally
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    return response
+
 def extract_valid_json(raw_response):
     """
     Cleans raw AI response text of markdown wrappers (```json ... ```) 
