@@ -1,0 +1,3 @@
+## 2026-08-11 - SQLite Index-Friendly Range Query Optimization
+**Learning:** Wrapping a column in a function (e.g., `date(created_at)`) makes the SQL query non-sargable (un-indexable) because the database engine must evaluate the function on every row. Utilizing a range condition with the raw column (e.g., `created_at >= date('now')`) alongside multi-column composite indexes reduces rate-limiting lookup complexity from $O(N)$ full-scan to $O(\log N)$ b-tree seek.
+**Action:** When designing rate-limiters or range checks on timestamps in SQLite/SQL databases, avoid functional column wrappers on the left-hand side of comparisons and pair with composite indexes containing the query's filter columns.
