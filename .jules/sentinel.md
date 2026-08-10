@@ -1,0 +1,4 @@
+## 2026-08-10 - [Enforce Dynamic Session Secrets and Enforce Global Security Headers]
+**Vulnerability:** Static, hardcoded session SECRET_KEY could allow session token forgery, leading to session hijacking. Lack of standard security headers (like X-Frame-Options, X-Content-Type-Options) exposes the application to clickjacking and MIME type sniffing vulnerabilities.
+**Learning:** Hardcoding config credentials or keeping standard placeholders makes production deployments vulnerable. Injecting standard security headers at the blueprint or application layer globally prevents browser-side exploitation vectors cleanly.
+**Prevention:** Always lookup config secrets dynamically using environment lookups with cryptographically secure fallback secrets (e.g., secrets.token_hex). Implement global middleware or before/after request filters to enforce a solid defensive set of security headers for HTTP responses.

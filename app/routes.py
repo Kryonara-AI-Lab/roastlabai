@@ -353,6 +353,17 @@ def delete_verdict(verdict_id):
 def favicon():
     return send_from_directory(os.path.join(bp.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+@bp.after_request
+def add_security_headers(response):
+    """
+    Enforce global security headers to protect against common web vulnerabilities
+    such as clickjacking and MIME type sniffing.
+    """
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    return response
+
 # Support direct template renderings
 @bp.route('/privacy.html')
 @bp.route('/compliance/privacy')
