@@ -37,6 +37,14 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users (id)
         )
     ''')
+    # ⚡ Bolt Performance Optimization:
+    # Add composite indexes on roasts for fast rate-limit lookups and history queries
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_roasts_user_created ON roasts (user_id, created_at)
+    ''')
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_roasts_ip_user_created ON roasts (ip_address, user_id, created_at)
+    ''')
     conn.commit()
     conn.close()
 
@@ -81,15 +89,19 @@ def index():
             conn = get_db_connection()
             cursor = conn.cursor()
 
+            # ⚡ Bolt Performance Optimization:
+            # Replaced un-indexable 'date(created_at) = date("now")' query with index-friendly range-based
+            # comparisons 'created_at >= date("now")' to enable SQLite to utilize composite indexes,
+            # avoiding an O(N) full table scan.
             if session.get('user_id'):
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE user_id = ? AND date(created_at) = date('now')
+                    WHERE user_id = ? AND created_at >= date('now')
                 ''', (session.get('user_id'),))
             else:
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE ip_address = ? AND user_id IS NULL AND date(created_at) = date('now')
+                    WHERE ip_address = ? AND user_id IS NULL AND created_at >= date('now')
                 ''', (ip,))
 
             today_count = cursor.fetchone()[0]
