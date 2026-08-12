@@ -1,0 +1,3 @@
+## 2026-08-12 - [SQLite Rate Limiting & Composite Indexes]
+**Learning:** Using SQLite function calls like `date(created_at)` on indexing columns in query filters prevents the database engine from utilizing existing indices. This leads to full-table scans, causing significant performance degradation as the `roasts` table grows.
+**Action:** Replace un-indexable `date(created_at) = date('now')` with index-friendly range-based queries like `created_at >= date('now')` and create composite indices on the relevant filtering and sorting columns: `idx_roasts_user_created` on `(user_id, created_at)` and `idx_roasts_ip_user_created` on `(ip_address, user_id, created_at)`.
