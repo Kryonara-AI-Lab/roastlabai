@@ -37,6 +37,9 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users (id)
         )
     ''')
+    # Performance optimization: Composite indexes for fast rate-limiting & history queries
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_roasts_user_created ON roasts (user_id, created_at DESC)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_roasts_ip_user_created ON roasts (ip_address, user_id, created_at DESC)')
     conn.commit()
     conn.close()
 
@@ -78,18 +81,20 @@ def index():
 
         if user_input.strip():
             # Enforce 3-roast daily cap
+            # Performance optimization: Using created_at >= date('now') instead of date(created_at) = date('now')
+            # allows SQLite query planner to use composite indexes (SEARCH instead of SCAN).
             conn = get_db_connection()
             cursor = conn.cursor()
 
             if session.get('user_id'):
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE user_id = ? AND date(created_at) = date('now')
+                    WHERE user_id = ? AND created_at >= date('now')
                 ''', (session.get('user_id'),))
             else:
                 cursor.execute('''
                     SELECT COUNT(*) FROM roasts
-                    WHERE ip_address = ? AND user_id IS NULL AND date(created_at) = date('now')
+                    WHERE ip_address = ? AND user_id IS NULL AND created_at >= date('now')
                 ''', (ip,))
 
             today_count = cursor.fetchone()[0]
