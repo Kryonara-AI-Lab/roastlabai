@@ -1,0 +1,3 @@
+## 2026-05-20 - SQLite Function Evaluation vs Range Queries on Timestamps
+**Learning:** SQLite cannot use composite B-Tree indexes when column values are wrapped in functions like `date(created_at) = date('now')`, resulting in full table scans and temporary sorting B-Trees for `ORDER BY` queries. Replacing function calls with indexable range queries (`created_at >= date('now')`) together with composite indexes `(user_id, created_at)` and `(ip_address, user_id, created_at)` enables SQLite to execute `COVERING INDEX` range scans and avoid temporary sorting overhead.
+**Action:** Always rewrite date/timestamp filter expressions as direct column comparisons against constant expressions (e.g. `created_at >= date('now')`) when indexing timestamp columns.
