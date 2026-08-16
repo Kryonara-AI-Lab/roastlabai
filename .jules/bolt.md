@@ -1,0 +1,3 @@
+## 2026-06-20 - SQLite Index Optimization for Date Filtering
+**Learning:** SQLite cannot use standard indexes on datetime columns when queries evaluate scalar functions on those columns (e.g., `WHERE date(created_at) = date('now')`), resulting in full table scans. Converting the condition into an index-friendly range comparison (`WHERE created_at >= date('now')`) allows SQLite query planner to perform an index search using composite indexes like `(ip_address, user_id, created_at)`.
+**Action:** Always prefer range comparisons (`>= date('now')`) over function calls (`date(col)`) when querying indexed timestamp fields in SQLite.
