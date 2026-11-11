@@ -8,6 +8,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 bp = Blueprint('routes', __name__)
 
+@bp.after_request
+def add_security_headers(response):
+    # SECURITY REFLECTION: Enforce defense-in-depth with critical security headers.
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN' # Prevents clickjacking attacks
+    response.headers['X-Content-Type-Options'] = 'nosniff' # Prevents MIME-sniffing vulnerabilities
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin' # Restricts information flow to foreign domains
+    return response
+
 # Vercel-writable /tmp/ database location or local relative db path
 DB_PATH = '/tmp/roastlab.db' if os.environ.get('VERCEL') else os.path.join(os.path.dirname(__file__), 'roastlab.db')
 
